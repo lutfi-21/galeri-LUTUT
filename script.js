@@ -167,3 +167,31 @@ function triggerSurprise() {
         }, 500);
     };
 }
+
+// --- FITUR EKSKLUSIF: SANDI ---
+function checkPass() {
+    const input = document.getElementById('passInput').value;
+    const overlay = document.getElementById('loginOverlay');
+    const error = document.getElementById('errorMsg');
+    
+    // GANTI 'senja2026' dengan sandi yang kamu mau
+    const passwordBenar = 'LutfiDita2026'; 
+
+    if (input === passwordBenar) {
+        overlay.style.transition = "0.5s";
+        overlay.style.opacity = "0";
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 500);
+    } else {
+        error.style.display = 'block';
+        document.getElementById('passInput').value = "";
+    }
+}
+
+// Biar bisa tekan 'Enter' buat masuk
+document.getElementById("passInput").addEventListener("keyup", function(event) {
+    if (event.key === "Enter") {
+        checkPass();
+    }
+});
