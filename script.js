@@ -77,9 +77,11 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: '0',
         width: '0',
-        videoId: 'dQw4w9WgXcQ', // <--- PASTIKAN ID INI BENAR
+        videoId: 'uaqnG8IvXcI', // <--- PASTIKAN ID INI BENAR
         playerVars: {
             'autoplay': 0,
+            'playlist' : 'uaqnG8IvXcI',
+            'loop' : 1,
             'controls': 0,
             'disablekb': 1,
             'rel': 0,
