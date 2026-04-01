@@ -1,54 +1,60 @@
-// --- 1. KONFIGURASI FIREBASE LUTFI ---
+// --- 1. KONFIGURASI FIREBASE ---
 const firebaseConfig = {
   apiKey: "AIzaSyB35KZFBHlHVhfs61lRWODm_xaYM-v-xJY",
   authDomain: "galeri-lutut.firebaseapp.com",
   projectId: "galeri-lutut",
   storageBucket: "galeri-lutut.firebasestorage.app",
   messagingSenderId: "941582096185",
-  appId: "1:941582096185:web:9aec6f5f798ff2d9437ae8",
-  measurementId: "G-K74GSKWXCR"
+  appId: "1:941582096185:web:9aec6f5f798ff2d9437ae8"
 };
 
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// --- 2. PENGATURAN SENSOR & STATE ---
-let lastUpdate = 0;
-let x = 0, y = 0, z = 0, lastX = 0, lastY = 0, lastZ = 0;
+// --- 2. VARIABLE GLOBAL ---
+var player; 
 let isSurpriseActive = false;
-let player; // YouTube Player
-let isMusicPlaying = false;
+let lastX = 0, lastY = 0, lastZ = 0;
 
-// --- 3. LOGIKA FIREBASE (REALTIME GALLERY) ---
+// --- 3. FITUR EKSKLUSIF: SANDI (Dipindah ke atas agar terbaca duluan) ---
+function checkPass() {
+    const input = document.getElementById('passInput').value;
+    const overlay = document.getElementById('loginOverlay');
+    const error = document.getElementById('errorMsg');
+    
+    if (input === 'LutfiDita2026') {
+        overlay.style.transition = "0.5s";
+        overlay.style.opacity = "0";
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            applyTimeTheme(); // Jalankan tema saat terbuka
+        }, 500);
+    } else {
+        error.style.display = 'block';
+        document.getElementById('passInput').value = "";
+    }
+}
+
+// --- 4. LOGIKA FIREBASE ---
 window.onload = function() {
     const photoRef = database.ref('photos');
-    
-    // Muncul otomatis di semua HP saat ada foto baru
     photoRef.on('child_added', (snapshot) => {
         const data = snapshot.val();
         renderPhoto(data.image, snapshot.key);
     });
-
-    // Hilang otomatis di semua HP saat ada foto dihapus
     photoRef.on('child_removed', (snapshot) => {
         const el = document.getElementById(snapshot.key);
         if (el) el.remove();
     });
-};
 
-function handleUpload(event) {
-    const files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            database.ref('photos').push({
-                image: e.target.result,
-                timestamp: Date.now()
-            });
-        };
-        reader.readAsDataURL(files[i]);
+    // Input Enter Listener (Ditaruh di dalam onload agar aman)
+    const pInput = document.getElementById("passInput");
+    if(pInput) {
+        pInput.addEventListener("keyup", function(e) {
+            if (e.key === "Enter") checkPass();
+        });
     }
-}
+};
 
 function renderPhoto(imageSrc, key) {
     const gallery = document.getElementById('gallery');
@@ -65,58 +71,83 @@ function renderPhoto(imageSrc, key) {
     gallery.appendChild(div);
 }
 
+function handleUpload(event) {
+    const files = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            database.ref('photos').push({
+                image: e.target.result,
+                timestamp: Date.now()
+            });
+        };
+        reader.readAsDataURL(files[i]);
+    }
+}
+
 function deletePhoto(key) {
-    if (confirm("Hapus kenangan ini untuk semua orang?")) {
+    if (confirm("Hapus kenangan ini?")) {
         database.ref('photos/' + key).remove();
     }
 }
 
-// --- 4. LOGIKA MUSIK YOUTUBE ---
-var player; // Pastikan ini ada di baris pertama
-
+// --- 5. LOGIKA MUSIK YOUTUBE ---
 function onYouTubeIframeAPIReady() {
-    console.log("Menghubungkan ke YouTube...");
     player = new YT.Player('player', {
-        height: '0',
-        width: '0',
-        videoId: 'uaqnG8IvXcI', // ID lagu Cigarettes After Sex pilihanmu
+        height: '0', width: '0',
+        videoId: 'uaqnG8IvXcI',
         playerVars: {
-            'autoplay': 0,
-            'controls': 0,
+            'autoplay': 0, 'controls': 0, 'loop': 1,
             'playlist': 'uaqnG8IvXcI',
-            'loop': 1,
             'origin': window.location.origin
         },
-        events: {
-            'onReady': onPlayerReady
-        }
+        events: { 'onReady': () => console.log("YouTube Ready!") }
     });
 }
 
-function onPlayerReady(event) {
-    console.log("Koneksi YouTube SUKSES, Lutfi!");
-}
-
-function onPlayerError(event) {
-    console.error("YouTube Error:", event.data);
-}
-
-function toggleMusic() {
-    const btn = document.getElementById('musicBtn');
-    initMotionSensor(); // Aktifkan sensor guncangan
-
-    if (!isMusicPlaying) {
-        player.playVideo();
-        btn.innerText = "⏸ Pause Music";
-        isMusicPlaying = true;
+function togglePlay() {
+    if (player && player.getPlayerState) {
+        const state = player.getPlayerState();
+        if (state == 1) {
+            player.pauseVideo();
+            document.getElementById('musicBtn').innerText = "🎵 Play Music";
+        } else {
+            player.playVideo();
+            document.getElementById('musicBtn').innerText = "⏸ Pause Music";
+            initMotionSensor(); // Aktifkan sensor guncangan saat musik mulai
+        }
     } else {
-        player.pauseVideo();
-        btn.innerText = "🎵 Play Music";
-        isMusicPlaying = false;
+        alert("Sabar Lutfi, musiknya lagi loading...");
     }
 }
 
-// --- 5. SENSOR GUNCANGAN (ANTI-SENSITIF) ---
+// --- 6. FITUR TEMA & SCREENSHOT ---
+function applyTimeTheme() {
+    const hour = new Date().getHours();
+    const body = document.body;
+    if (hour >= 6 && hour < 18) {
+        body.style.background = "linear-gradient(-45deg, #e0eafc, #cfdef3, #a2c2e1)";
+        body.style.color = "#2c3e50";
+    } else {
+        body.style.background = "linear-gradient(-45deg, #0f0c29, #302b63, #24243e)";
+        body.style.color = "white";
+    }
+}
+
+function takeScreenshot() {
+    const btnGroup = document.querySelector('.button-group');
+    if(btnGroup) btnGroup.style.opacity = '0';
+
+    html2canvas(document.body, { useCORS: true }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Moment-Lutfi.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        if(btnGroup) btnGroup.style.opacity = '1';
+    });
+}
+
+// --- 7. SENSOR GUNCANGAN ---
 function initMotionSensor() {
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
         DeviceMotionEvent.requestPermission().then(state => {
@@ -131,99 +162,21 @@ function handleMotion(event) {
     if (isSurpriseActive) return;
     let acc = event.accelerationIncludingGravity;
     if (!acc) return;
-
     let deltaX = Math.abs(acc.x - lastX);
-    let deltaY = Math.abs(acc.y - lastY);
-    let deltaZ = Math.abs(acc.z - lastZ);
-
-    lastX = acc.x; lastY = acc.y; lastZ = acc.z;
-
-    // Angka 45 = Harus disentak/diguncang kuat baru nyala
-    if (deltaX > 45 || deltaY > 45 || deltaZ > 45) {
-        triggerSurprise();
-    }
+    if (deltaX > 45) triggerSurprise();
+    lastX = acc.x;
 }
 
-// --- 6. VIDEO PESAN KEJUTAN ---
 function triggerSurprise() {
     const videoOverlay = document.getElementById('videoOverlay');
     const video = document.getElementById('surpriseVideo');
+    if (!videoOverlay || !video) return;
 
     isSurpriseActive = true;
     videoOverlay.style.display = 'flex';
-    setTimeout(() => videoOverlay.classList.add('active'), 10);
-
-    if (player) player.setVolume(10); // Kecilkan musik YT
-    video.currentTime = 0;
     video.play();
-
-    video.onended = function() {
-        videoOverlay.classList.remove('active');
-        setTimeout(() => {
-            videoOverlay.style.display = 'none';
-            isSurpriseActive = false;
-            if (player) player.setVolume(100); // Balikkan suara YT
-        }, 500);
+    video.onended = () => {
+        videoOverlay.style.display = 'none';
+        isSurpriseActive = false;
     };
-}
-
-// --- FITUR EKSKLUSIF: SANDI ---
-function checkPass() {
-    const input = document.getElementById('passInput').value;
-    const overlay = document.getElementById('loginOverlay');
-    const error = document.getElementById('errorMsg');
-    
-    // GANTI 'senja2026' dengan sandi yang kamu mau
-    const passwordBenar = 'LutfiDita2026'; 
-
-    if (input === passwordBenar) {
-        overlay.style.transition = "0.5s";
-        overlay.style.opacity = "0";
-        setTimeout(() => {
-            overlay.style.display = 'none';
-        }, 500);
-    } else {
-        error.style.display = 'block';
-        document.getElementById('passInput').value = "";
-    }
-}
-
-// Biar bisa tekan 'Enter' buat masuk
-document.getElementById("passInput").addEventListener("keyup", function(event) {
-    if (event.key === "Enter") {
-        checkPass();
-    }
-});
-
-// 1. Fungsi Utama Musik
-function togglePlay() {
-    if (player && player.getPlayerState) {
-        if (player.getPlayerState() == 1) {
-            player.pauseVideo();
-            document.getElementById('musicBtn').innerText = "🎵 Play Music";
-        } else {
-            player.playVideo();
-            document.getElementById('musicBtn').innerText = "⏸ Pause Music";
-        }
-    } else {
-        console.error("Player YouTube belum siap!");
-    }
-}
-
-// 2. Fungsi Fitur 5: Screenshot
-function takeScreenshot() {
-    const btnGroup = document.querySelector('.button-group');
-    btnGroup.style.opacity = '0'; // Sembunyikan semua tombol agar foto bersih
-
-    html2canvas(document.body, {
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: null
-    }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'Moment-Lutfi.png';
-        link.href = canvas.toDataURL();
-        link.click();
-        btnGroup.style.opacity = '1'; // Munculkan lagi
-    });
 }
