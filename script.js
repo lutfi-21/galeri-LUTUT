@@ -1,3 +1,4 @@
+const threshold = 45; // Tambahkan ini di baris nomor 1
 function toggleMusic() {
     const music = document.getElementById('bgMusic');
     const btn = document.getElementById('musicBtn');
@@ -232,6 +233,8 @@ document.getElementById('musicBtn').addEventListener('click', function() {
 }, { once: true });
 
 function handleMotion(event) {
+    if (isSurpriseActive) return; 
+
     let acceleration = event.accelerationIncludingGravity;
     let curTime = new Date().getTime();
 
@@ -243,18 +246,16 @@ function handleMotion(event) {
         y = acceleration.y;
         z = acceleration.z;
 
+        // Di baris bawah ini variabel threshold digunakan
         let speed = Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime * 10000;
 
         if (speed > threshold) {
             triggerSurprise();
         }
 
-        lastX = x;
-        lastY = y;
-        lastZ = z;
+        lastX = x; lastY = y; lastZ = z;
     }
 }
-
 function triggerSurprise() {
     const videoOverlay = document.getElementById('videoOverlay');
     const video = document.getElementById('surpriseVideo');
