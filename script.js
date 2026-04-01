@@ -195,3 +195,20 @@ document.getElementById("passInput").addEventListener("keyup", function(event) {
         checkPass();
     }
 });
+
+function takeScreenshot() {
+    const btn = document.getElementById('captureBtn');
+    btn.style.display = 'none'; // Sembunyikan tombol biar hasil foto bersih
+
+    html2canvas(document.body, {
+        useCORS: true,
+        backgroundColor: null // Agar background gradasi kamu ikut terpotret
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Galeri-Lutfi-Moment.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        
+        btn.style.display = 'block'; // Munculkan tombol lagi
+    });
+}
