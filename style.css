@@ -191,25 +191,48 @@ header {
     pointer-events: none;
 }
 
+/* --- PERBAIKAN TOMBOL HAPUS SMOOTH --- */
+
 .delete-btn {
     position: absolute;
-    top: 15px; right: 15px;
-    background: rgba(255, 77, 109, 0.8);
+    top: 15px; 
+    right: 15px;
+    background: rgba(255, 77, 109, 0.9); /* Merah muda tema kamu */
     color: white;
     border: none;
     border-radius: 50%;
-    width: 35px; height: 35px;
+    width: 35px; 
+    height: 35px;
     cursor: pointer;
-    display: none;
+    
+    /* INI KUNCINYA UNTUK EFEK SMOOTH */
+    display: flex; /* Selalu flex agar X di tengah */
     justify-content: center;
     align-items: center;
     font-size: 1.2rem;
+    font-weight: bold;
     z-index: 10;
-    transition: 0.3s;
+
+    /* Awalnya transparan dan tidak bisa di-klik */
+    opacity: 0; 
+    pointer-events: none; 
+    
+    /* Transisi halus selama 0.3 detik */
+    transition: all 0.3s ease-in-out;
 }
 
-.photo-card:hover .delete-btn { display: flex; }
-.delete-btn:hover { background: #ff0000; transform: scale(1.1); }
+/* Saat kartu foto di-hover (di PC) atau di-tap (di HP) */
+.photo-card:hover .delete-btn {
+    opacity: 1; /* Muncul perlahan */
+    pointer-events: auto; /* Bisa di-klik */
+    transform: scale(1); /* Reset skala */
+}
+
+/* Efek tambahan saat tombol X-nya sendiri di-hover */
+.delete-btn:hover {
+    background: #ff0000; /* Merah menyala */
+    transform: scale(1.1); /* Sedikit membesar */
+}
 
 /* --- 5. OVERLAY (LOGIN & VIDEO) --- */
 #loginOverlay {
