@@ -1,5 +1,5 @@
 // 1. Pengaturan Sensitivitas & Variabel Global
-const threshold = 80; // Angka guncangan (45 = sedang, 60 = kuat)
+const threshold = 250; // Angka guncangan (45 = sedang, 60 = kuat)
 let lastUpdate = 0;
 let x, y, z, lastX, lastY, lastZ;
 let isSurpriseActive = false; 
