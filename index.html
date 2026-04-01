@@ -42,19 +42,14 @@
 <div id="player" style="display:none;"></div>
     <div class="background-overlay"></div>
 
-    <header>
+   <header>
         <h1 class="title">This is LUTUT</h1>
         <p class="subtitle">Lutfi Dan Ditut Anjayyy.</p>        
-        <div class="audio-container">
-    <audio id="bgMusic" loop preload="auto">
-        <source src="Terbuang Dalam Waktu - Barasuara (Peaceful Piano).mp3" type="audio/mpeg">
-        Browser Anda tidak mendukung elemen audio.
-    </audio>
-    <div class="button-group" style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-top: 20px;">
-    <button id="musicBtn" onclick="togglePlay()" style="...">🎵 Play Music</button>
-    
-    <button id="captureBtn" onclick="takeScreenshot()" style="...">📸 Capture Moment</button>
-</div>
+        
+        <div class="button-group" style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-top: 20px;">
+            <button id="musicBtn" onclick="togglePlay()" class="btn-estetik">🎵 Play Music</button>
+            <button id="captureBtn" onclick="takeScreenshot()" class="btn-estetik">📸 Capture Moment</button>
+        </div>
     </header>
 
     <main>
@@ -73,16 +68,15 @@
     </main>
 
     <div id="videoOverlay" class="video-overlay">
-    <video id="surpriseVideo">
-        <source src="pesan-video.mp4" type="video/mp4">
-        Browser tidak mendukung video.
-    </video>
-</div>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
+        <video id="surpriseVideo">
+            <source src="pesan-video.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="script.js"></script>
 </body>
 </html>
