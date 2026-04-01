@@ -72,30 +72,29 @@ function deletePhoto(key) {
 }
 
 // --- 4. LOGIKA MUSIK YOUTUBE ---
+var player; // Pastikan ini ada di baris pertama
+
 function onYouTubeIframeAPIReady() {
-    console.log("Mencoba menghubungkan ke YouTube...");
+    console.log("Menghubungkan ke YouTube...");
     player = new YT.Player('player', {
         height: '0',
         width: '0',
-        videoId: 'uaqnG8IvXcI', // <--- PASTIKAN ID INI BENAR
+        videoId: 'uaqnG8IvXcI', // ID lagu Cigarettes After Sex pilihanmu
         playerVars: {
             'autoplay': 0,
-            'playlist' : 'uaqnG8IvXcI',
-            'loop' : 1,
             'controls': 0,
-            'disablekb': 1,
-            'rel': 0,
-            'origin': window.location.origin // Ini kunci buat Vercel
+            'playlist': 'uaqnG8IvXcI',
+            'loop': 1,
+            'origin': window.location.origin
         },
         events: {
-            'onReady': onPlayerReady,
-            'onError': onPlayerError
+            'onReady': onPlayerReady
         }
     });
 }
 
 function onPlayerReady(event) {
-    console.log("YouTube SIAP diputar!");
+    console.log("Koneksi YouTube SUKSES, Lutfi!");
 }
 
 function onPlayerError(event) {
