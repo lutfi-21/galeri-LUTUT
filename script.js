@@ -1,85 +1,138 @@
-// 1. Pengaturan Sensitivitas & Variabel Global
-const threshold = 40; // Angka guncangan (45 = sedang, 60 = kuat)
-let lastUpdate = 0;
-let x, y, z, lastX, lastY, lastZ;
-let isSurpriseActive = false; 
-
-// 2. Fungsi untuk memuat foto lama saat refresh
-window.onload = function() {
-    loadPhotos();
+// --- 1. KONFIGURASI FIREBASE LUTFI ---
+const firebaseConfig = {
+  apiKey: "AIzaSyB35KZFBHlHVhfs61lRWODm_xaYM-v-xJY",
+  authDomain: "galeri-lutut.firebaseapp.com",
+  projectId: "galeri-lutut",
+  storageBucket: "galeri-lutut.firebasestorage.app",
+  messagingSenderId: "941582096185",
+  appId: "1:941582096185:web:9aec6f5f798ff2d9437ae8",
+  measurementId: "G-K74GSKWXCR"
 };
 
-// 3. Fungsi Musik & Aktifkan Sensor (PENTING: Harus diklik dulu!)
-function toggleMusic() {
-    const music = document.getElementById('bgMusic');
-    const btn = document.getElementById('musicBtn');
-    
-    // Aktifkan sensor gerak saat tombol musik pertama kali diklik
-    initMotionSensor();
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
-    if (music.paused) {
-        music.play().then(() => {
-            btn.innerText = "⏸ Pause Music";
-        }).catch(err => {
-            alert("Klik 'Allow' atau pastikan musik sudah ter-load.");
-        });
-    } else {
-        music.pause();
-        btn.innerText = "🎵 Play Music";
+// --- 2. PENGATURAN SENSOR & STATE ---
+let lastUpdate = 0;
+let x = 0, y = 0, z = 0, lastX = 0, lastY = 0, lastZ = 0;
+let isSurpriseActive = false;
+let player; // YouTube Player
+let isMusicPlaying = false;
+
+// --- 3. LOGIKA FIREBASE (REALTIME GALLERY) ---
+window.onload = function() {
+    const photoRef = database.ref('photos');
+    
+    // Muncul otomatis di semua HP saat ada foto baru
+    photoRef.on('child_added', (snapshot) => {
+        const data = snapshot.val();
+        renderPhoto(data.image, snapshot.key);
+    });
+
+    // Hilang otomatis di semua HP saat ada foto dihapus
+    photoRef.on('child_removed', (snapshot) => {
+        const el = document.getElementById(snapshot.key);
+        if (el) el.remove();
+    });
+};
+
+function handleUpload(event) {
+    const files = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            database.ref('photos').push({
+                image: e.target.result,
+                timestamp: Date.now()
+            });
+        };
+        reader.readAsDataURL(files[i]);
     }
 }
 
-// 4. Inisialisasi Sensor Gerak
+function renderPhoto(imageSrc, key) {
+    const gallery = document.getElementById('gallery');
+    const placeholder = document.querySelector('.placeholder');
+    if (placeholder) placeholder.remove();
+
+    const div = document.createElement('div');
+    div.className = 'photo-card';
+    div.id = key;
+    div.innerHTML = `
+        <button class="delete-btn" onclick="deletePhoto('${key}')">&times;</button>
+        <img src="${imageSrc}" loading="lazy">
+    `;
+    gallery.appendChild(div);
+}
+
+function deletePhoto(key) {
+    if (confirm("Hapus kenangan ini untuk semua orang?")) {
+        database.ref('photos/' + key).remove();
+    }
+}
+
+// --- 4. LOGIKA MUSIK YOUTUBE ---
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '0', width: '0',
+        videoId: 'GANTI_DENGAN_ID_VIDEO', // <--- GANTI ID VIDEO YT DISINI
+        playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'GANTI_DENGAN_ID_VIDEO' }
+    });
+}
+
+function toggleMusic() {
+    const btn = document.getElementById('musicBtn');
+    initMotionSensor(); // Aktifkan sensor guncangan
+
+    if (!isMusicPlaying) {
+        player.playVideo();
+        btn.innerText = "⏸ Pause Music";
+        isMusicPlaying = true;
+    } else {
+        player.pauseVideo();
+        btn.innerText = "🎵 Play Music";
+        isMusicPlaying = false;
+    }
+}
+
+// --- 5. SENSOR GUNCANGAN (ANTI-SENSITIF) ---
 function initMotionSensor() {
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
-        // Khusus iPhone (iOS)
-        DeviceMotionEvent.requestPermission()
-            .then(response => {
-                if (response == 'granted') {
-                    window.addEventListener('devicemotion', handleMotion);
-                }
-            }).catch(console.error);
+        DeviceMotionEvent.requestPermission().then(state => {
+            if (state === 'granted') window.addEventListener('devicemotion', handleMotion);
+        });
     } else {
-        // Android & Browser lain
         window.addEventListener('devicemotion', handleMotion);
     }
 }
 
-// 5. Logika Hitung Guncangan
 function handleMotion(event) {
-    if (isSurpriseActive) return; 
-
+    if (isSurpriseActive) return;
     let acc = event.accelerationIncludingGravity;
-    
-    // Kita hanya deteksi jika ada hentakan keras mendadak (Delta > 40)
-    // Angka 40 ini sudah sangat tinggi, hampir mustahil terpicu hanya karena jalan kaki
+    if (!acc) return;
+
     let deltaX = Math.abs(acc.x - lastX);
     let deltaY = Math.abs(acc.y - lastY);
     let deltaZ = Math.abs(acc.z - lastZ);
 
-    // Update posisi terakhir
-    lastX = acc.x;
-    lastY = acc.y;
-    lastZ = acc.z;
+    lastX = acc.x; lastY = acc.y; lastZ = acc.z;
 
-    // PEMICU: Harus ada hentakan di salah satu arah yang meledak (bukan pelan-pelan)
-    if (deltaX > 40 || deltaY > 40 || deltaZ > 40) {
+    // Angka 45 = Harus disentak/diguncang kuat baru nyala
+    if (deltaX > 45 || deltaY > 45 || deltaZ > 45) {
         triggerSurprise();
     }
 }
 
-// 6. Fungsi Video Kejutan
+// --- 6. VIDEO PESAN KEJUTAN ---
 function triggerSurprise() {
     const videoOverlay = document.getElementById('videoOverlay');
     const video = document.getElementById('surpriseVideo');
-    const bgMusic = document.getElementById('bgMusic');
 
-    isSurpriseActive = true; 
+    isSurpriseActive = true;
     videoOverlay.style.display = 'flex';
     setTimeout(() => videoOverlay.classList.add('active'), 10);
 
-    // Kecilkan musik & putar video
-    bgMusic.volume = 0.1;
+    if (player) player.setVolume(10); // Kecilkan musik YT
     video.currentTime = 0;
     video.play();
 
@@ -88,50 +141,7 @@ function triggerSurprise() {
         setTimeout(() => {
             videoOverlay.style.display = 'none';
             isSurpriseActive = false;
-            bgMusic.volume = 1.0; 
+            if (player) player.setVolume(100); // Balikkan suara YT
         }, 500);
     };
-}
-
-// --- FUNGSI GALERI (Tetap Sama) ---
-function handleUpload(event) {
-    const files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            savePhotoToLocal(e.target.result);
-            renderPhoto(e.target.result);
-        };
-        reader.readAsDataURL(files[i]);
-    }
-}
-
-function renderPhoto(imageSrc) {
-    const gallery = document.getElementById('gallery');
-    const placeholder = document.querySelector('.placeholder');
-    if (placeholder) placeholder.remove();
-    const div = document.createElement('div');
-    div.className = 'photo-card';
-    div.innerHTML = `<button class="delete-btn" onclick="deletePhoto(this.parentElement, '${imageSrc}')">&times;</button><img src="${imageSrc}">`;
-    gallery.appendChild(div);
-}
-
-function savePhotoToLocal(img) {
-    let photos = JSON.parse(localStorage.getItem('gallery_memories')) || [];
-    photos.push(img);
-    localStorage.setItem('gallery_memories', JSON.stringify(photos));
-}
-
-function loadPhotos() {
-    let photos = JSON.parse(localStorage.getItem('gallery_memories')) || [];
-    photos.forEach(p => renderPhoto(p));
-}
-
-function deletePhoto(el, src) {
-    if (confirm("Hapus foto ini?")) {
-        el.remove();
-        let photos = JSON.parse(localStorage.getItem('gallery_memories')) || [];
-        photos = photos.filter(p => p !== src);
-        localStorage.setItem('gallery_memories', JSON.stringify(photos));
-    }
 }
