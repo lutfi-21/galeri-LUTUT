@@ -73,11 +73,31 @@ function deletePhoto(key) {
 
 // --- 4. LOGIKA MUSIK YOUTUBE ---
 function onYouTubeIframeAPIReady() {
+    console.log("Mencoba menghubungkan ke YouTube...");
     player = new YT.Player('player', {
-        height: '0', width: '0',
-        videoId: 'GANTI_DENGAN_ID_VIDEO', // <--- GANTI ID VIDEO YT DISINI
-        playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'GANTI_DENGAN_ID_VIDEO' }
+        height: '0',
+        width: '0',
+        videoId: 'dQw4w9WgXcQ', // <--- PASTIKAN ID INI BENAR
+        playerVars: {
+            'autoplay': 0,
+            'controls': 0,
+            'disablekb': 1,
+            'rel': 0,
+            'origin': window.location.origin // Ini kunci buat Vercel
+        },
+        events: {
+            'onReady': onPlayerReady,
+            'onError': onPlayerError
+        }
     });
+}
+
+function onPlayerReady(event) {
+    console.log("YouTube SIAP diputar!");
+}
+
+function onPlayerError(event) {
+    console.error("YouTube Error:", event.data);
 }
 
 function toggleMusic() {
