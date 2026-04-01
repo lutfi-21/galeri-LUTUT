@@ -54,9 +54,11 @@
 </div>
     </header>
 
-    <button id="captureBtn" onclick="takeScreenshot()" style="margin-top: 20px; padding: 10px 20px; border-radius: 20px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; backdrop-filter: blur(5px);">
-    📸 Capture Moment
-</button>
+  <div class="button-group" style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-top: 20px;">
+    <button id="musicBtn" onclick="togglePlay()" style="...">🎵 Play Music</button>
+    
+    <button id="captureBtn" onclick="takeScreenshot()" style="...">📸 Capture Moment</button>
+</div>
 
     <main>
         <div class="upload-section">
@@ -82,7 +84,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
