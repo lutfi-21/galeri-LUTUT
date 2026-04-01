@@ -196,19 +196,35 @@ document.getElementById("passInput").addEventListener("keyup", function(event) {
     }
 });
 
+// 1. Fungsi Utama Musik
+function togglePlay() {
+    if (player && player.getPlayerState) {
+        if (player.getPlayerState() == 1) {
+            player.pauseVideo();
+            document.getElementById('musicBtn').innerText = "🎵 Play Music";
+        } else {
+            player.playVideo();
+            document.getElementById('musicBtn').innerText = "⏸ Pause Music";
+        }
+    } else {
+        console.error("Player YouTube belum siap!");
+    }
+}
+
+// 2. Fungsi Fitur 5: Screenshot
 function takeScreenshot() {
-    const btn = document.getElementById('captureBtn');
-    btn.style.display = 'none'; // Sembunyikan tombol biar hasil foto bersih
+    const btnGroup = document.querySelector('.button-group');
+    btnGroup.style.opacity = '0'; // Sembunyikan semua tombol agar foto bersih
 
     html2canvas(document.body, {
         useCORS: true,
-        backgroundColor: null // Agar background gradasi kamu ikut terpotret
+        allowTaint: true,
+        backgroundColor: null
     }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'Galeri-Lutfi-Moment.png';
+        link.download = 'Moment-Lutfi.png';
         link.href = canvas.toDataURL();
         link.click();
-        
-        btn.style.display = 'block'; // Munculkan tombol lagi
+        btnGroup.style.opacity = '1'; // Munculkan lagi
     });
 }
