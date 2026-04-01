@@ -1,0 +1,275 @@
+:root {
+    --primary-love: #ff4d6d; /* Merah muda yang lebih menyala */
+    --glass-bg: rgba(0, 0, 0, 0.3); /* Glassmorphism gelap */
+    --text-color: #ffffff;
+    --sub-text: #e0e0e0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    /* Menggunakan gambar latar estetik dan gelap */
+    background: 
+        linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(20,20,20,0.8)),
+        url('https://images.unsplash.com/photo-1518199266791-c399a9560528?q=80&w=2000') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    color: var(--text-color);
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Mengubah overlay menjadi efek partikel bintang */
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: transparent;
+}
+
+/* Membuat efek partikel bintang dengan pseudo-element */
+.background-overlay::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    box-shadow: 
+        /* Menyebarkan bintang secara acak (bisa disesuaikan) */
+        10vw 20vh 1px #fff, 25vw 50vh 1px #fff, 35vw 80vh 1px #fff,
+        50vw 10vh 1px #fff, 65vw 40vh 1px #fff, 75vw 70vh 1px #fff,
+        90vw 30vh 1px #fff, 15vw 90vh 1px #fff, 5vw 60vh 1px #fff;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: starsMoving 50s linear infinite;
+}
+
+/* --- Penyesuaian Elemen Lain Agar Serasi dengan Tema Gelap --- */
+
+header {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4.5rem;
+    color: var(--primary-love);
+    text-shadow: 0 0 15px rgba(255, 77, 109, 0.5);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-weight: 300;
+    color: var(--sub-text);
+    letter-spacing: 1.5px;
+}
+
+#musicBtn {
+    background: var(--glass-bg);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.photo-card {
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.photo-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    z-index: 1;
+}
+
+/* Pesan Placeholder di tema gelap */
+.placeholder p {
+    color: var(--sub-text);
+    font-size: 1.1rem;
+}
+
+/* --- Animasi Partikel Bintang --- */
+@keyframes starsMoving {
+    from { transform: translateY(0); }
+    to { transform: translateY(-100vh); }
+}
+
+header {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4rem;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.audio-container {
+    margin-top: 20px;
+}
+
+#musicBtn {
+    padding: 10px 25px;
+    border-radius: 30px;
+    border: none;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+#musicBtn:hover {
+    background: var(--primary-love);
+}
+
+.upload-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 12px 30px;
+    cursor: pointer;
+    background: white;
+    color: var(--primary-love);
+    font-weight: 600;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: 0.3s transform;
+}
+
+.custom-file-upload:hover {
+    transform: scale(1.05);
+}
+
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 0 40px 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.photo-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: 0.4s all ease;
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.photo-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    transition: 0.5s;
+}
+
+.photo-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.photo-card:hover img {
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+}
+
+/* Container untuk foto agar posisi tombol hapus bisa diatur */
+.photo-card {
+    position: relative; /* Penting untuk posisi tombol */
+}
+
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: none; /* Sembunyi secara default */
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    z-index: 10;
+    transition: 0.3s;
+}
+
+.photo-card:hover .delete-btn {
+    display: flex; /* Muncul saat kartu di-hover */
+}
+
+.delete-btn:hover {
+    background: #ff0000;
+    transform: scale(1.1);
+}
+
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: none; /* Sembunyi di awal */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.video-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+#surpriseVideo {
+    max-width: 100%;
+    max-height: 100%;
+}

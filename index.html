@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Eternal Memories</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="background-overlay"></div>
+
+    <header>
+        <h1 class="title">This is LUTUT</h1>
+        <p class="subtitle">Lutfi Dan Ditut Anjayyy.</p>        
+        <div class="audio-container">
+    <audio id="bgMusic" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+    <button id="musicBtn" onclick="toggleMusic()">🎵 Play Music</button>
+</div>
+    </header>
+
+    <main>
+        <div class="upload-section">
+            <label for="file-upload" class="custom-file-upload">
+                + Tambah Kenangan Baru
+            </label>
+            <input id="file-upload" type="file" accept="image/*" multiple onchange="handleUpload(event)"/>
+        </div>
+
+        <div class="gallery-container" id="gallery">
+            <div class="photo-card placeholder">
+                <p>belum tek foto, upload lah foto nyo.</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="videoOverlay" class="video-overlay">
+    <video id="surpriseVideo">
+        <source src="pesan-video.mp4" type="video/mp4">
+        Browser tidak mendukung video.
+    </video>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
