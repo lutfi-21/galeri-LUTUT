@@ -1,5 +1,5 @@
 // 1. Pengaturan Sensitivitas & Variabel Global
-const threshold = 250; // Angka guncangan (45 = sedang, 60 = kuat)
+const threshold = 40; // Angka guncangan (45 = sedang, 60 = kuat)
 let lastUpdate = 0;
 let x, y, z, lastX, lastY, lastZ;
 let isSurpriseActive = false; 
@@ -49,24 +49,22 @@ function initMotionSensor() {
 function handleMotion(event) {
     if (isSurpriseActive) return; 
 
-    let acceleration = event.accelerationIncludingGravity;
-    let curTime = new Date().getTime();
+    let acc = event.accelerationIncludingGravity;
+    
+    // Kita hanya deteksi jika ada hentakan keras mendadak (Delta > 40)
+    // Angka 40 ini sudah sangat tinggi, hampir mustahil terpicu hanya karena jalan kaki
+    let deltaX = Math.abs(acc.x - lastX);
+    let deltaY = Math.abs(acc.y - lastY);
+    let deltaZ = Math.abs(acc.z - lastZ);
 
-    if ((curTime - lastUpdate) > 100) {
-        let diffTime = curTime - lastUpdate;
-        lastUpdate = curTime;
+    // Update posisi terakhir
+    lastX = acc.x;
+    lastY = acc.y;
+    lastZ = acc.z;
 
-        x = acceleration.x;
-        y = acceleration.y;
-        z = acceleration.z;
-
-        let speed = Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime * 10000;
-
-        if (speed > threshold) {
-            triggerSurprise();
-        }
-
-        lastX = x; lastY = y; lastZ = z;
+    // PEMICU: Harus ada hentakan di salah satu arah yang meledak (bukan pelan-pelan)
+    if (deltaX > 40 || deltaY > 40 || deltaZ > 40) {
+        triggerSurprise();
     }
 }
 
