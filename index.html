@@ -54,6 +54,30 @@
     </header>
 
     <main>
+        <div class="time-capsule-container">
+    <div id="capsuleIcon" onclick="openTimeCapsule()">
+        <div class="envelope">
+            <span id="lockStatus">🔒</span>
+            <p>Surat Masa Depan</p>
+        </div>
+    </div>
+</div>
+
+<div id="capsuleModal" class="modal-overlay" onclick="closeCapsule()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-modal" onclick="closeCapsule()">&times;</span>
+        <h2 id="modalTitle">Pesan Masa Depan</h2>
+        <hr>
+        <div id="modalBody">
+            <p id="countdownText"></p>
+            <div id="secretMessage" style="display:none;">
+                Halo Ditut... <br><br>
+                Kalau kamu baca ini, berarti hari yang kita tunggu sudah tiba. 
+                Aku cuma mau bilang... (lanjutkan sendiri ya Lutfi!)
+            </div>
+        </div>
+    </div>
+</div>
         <div class="upload-section">
             <input type="text" id="photoCaption" placeholder="Tulis caption momen ini..." maxlength="40">
             <br>
