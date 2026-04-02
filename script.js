@@ -169,7 +169,7 @@ function triggerSurprise() {
 }
 
 // --- LOGIKA TIME CAPSULE ---
-const unlockDate = new Date("2026-01-04T00:00:00"); // GANTI KE TANGGAL SURAT BISA DIBUKA (Misal: Ultah Dita)
+const unlockDate = new Date("2027-01-04T00:00:00"); // GANTI KE TANGGAL SURAT BISA DIBUKA (Misal: Ultah Dita)
 
 function openTimeCapsule() {
     const modal = document.getElementById('capsuleModal');
