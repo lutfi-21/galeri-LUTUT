@@ -16,7 +16,7 @@ let lastX = 0;
 
 // --- 1. FITUR LOVE COUNTER ---
 function startLoveCounter() {
-    const startDate = new Date("2024-01-01T00:00:00"); // GANTI TANGGAL JADIAN KAMU DI SINI
+    const startDate = new Date("2026-01-04T00:00:00"); // GANTI TANGGAL JADIAN KAMU DI SINI
     setInterval(() => {
         const now = new Date();
         const diff = now - startDate;
