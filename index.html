@@ -10,43 +10,44 @@
 <body>
 
     <div class="forest-background">
-    <div class="tree tree-left">
-        <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50,200 L50,140" stroke="#0a0a1a" stroke-width="4" fill="none" />
-            <g class="leaves">
-                <ellipse cx="50" cy="100" rx="35" ry="60" fill="#161625" opacity="0.8"/>
-                <ellipse cx="35" cy="120" rx="25" ry="45" fill="#1c1c2e" opacity="0.6"/>
-                <ellipse cx="65" cy="120" rx="25" ry="45" fill="#161625" opacity="0.7"/>
-            </g>
-        </svg>
+        <div class="tree tree-left">
+            <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50,200 L50,140" stroke="#0a0a1a" stroke-width="4" fill="none" />
+                <g class="leaves">
+                    <ellipse cx="50" cy="100" rx="35" ry="60" fill="#161625" opacity="0.8"/>
+                    <ellipse cx="35" cy="120" rx="25" ry="45" fill="#1c1c2e" opacity="0.6"/>
+                    <ellipse cx="65" cy="120" rx="25" ry="45" fill="#161625" opacity="0.7"/>
+                </g>
+            </svg>
+        </div>
+        <div class="tree tree-right">
+            <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50,200 L50,150" stroke="#0a0a1a" stroke-width="3" fill="none" />
+                <g class="leaves">
+                    <ellipse cx="50" cy="110" rx="30" ry="50" fill="#161625" opacity="0.8"/>
+                    <ellipse cx="40" cy="130" rx="20" ry="35" fill="#1c1c2e" opacity="0.6"/>
+                </g>
+            </svg>
+        </div>
     </div>
-
-    <div class="tree tree-right">
-        <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50,200 L50,150" stroke="#0a0a1a" stroke-width="3" fill="none" />
-            <g class="leaves">
-                <ellipse cx="50" cy="110" rx="30" ry="50" fill="#161625" opacity="0.8"/>
-                <ellipse cx="40" cy="130" rx="20" ry="35" fill="#1c1c2e" opacity="0.6"/>
-            </g>
-        </svg>
-    </div>
-</div>
     
     <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; font-family: sans-serif;">
-    <h2 style="margin-bottom:20px; letter-spacing: 2px;">EXCLUSIVE ACCESS</h2>
-    <input type="password" id="passInput" placeholder="Masukkan Sandi..." style="padding:12px; border-radius:8px; border:none; text-align:center; outline:none; width:200px;">
-    <button onclick="checkPass()" style="margin-top:15px; padding:10px 25px; border-radius:20px; border:1px solid #fff; background:transparent; color:#fff; cursor:pointer;">Buka Galeri</button>
-    <p id="errorMsg" style="color:red; margin-top:10px; font-size:12px; display:none;">Sandi Salah, Lutfi!</p>
-</div>
+        <h2 style="margin-bottom:20px; letter-spacing: 2px;">EXCLUSIVE ACCESS</h2>
+        <input type="password" id="passInput" placeholder="Masukkan Sandi..." style="padding:12px; border-radius:8px; border:none; text-align:center; outline:none; width:200px;">
+        <button onclick="checkPass()" style="margin-top:15px; padding:10px 25px; border-radius:20px; border:1px solid #fff; background:transparent; color:#fff; cursor:pointer;">Buka Galeri</button>
+        <p id="errorMsg" style="color:red; margin-top:10px; font-size:12px; display:none;">Sandi Salah, Lutfi!</p>
+    </div>
     
-<div id="player" style="display:none;"></div>
+    <div id="player" style="display:none;"></div>
     <div class="background-overlay"></div>
 
-   <header>
+    <header>
         <h1 class="title">This is LUTUT</h1>
-        <p class="subtitle">Lutfi Dan Ditut Anjayyy.</p>        
+        <p class="subtitle">Lutfi Dan Ditut Anjayyy.</p>
         
-        <div class="button-group" style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-top: 20px;">
+        <div id="loveCounter"></div>
+        
+        <div class="button-group">
             <button id="musicBtn" onclick="togglePlay()" class="btn-estetik">🎵 Play Music</button>
             <button id="captureBtn" onclick="takeScreenshot()" class="btn-estetik">📸 Capture Moment</button>
         </div>
@@ -54,10 +55,12 @@
 
     <main>
         <div class="upload-section">
+            <input type="text" id="photoCaption" placeholder="Tulis caption momen ini..." maxlength="40">
+            <br>
             <label for="file-upload" class="custom-file-upload">
-                + Tambah Kenangan Baru
+                + Tambah Foto & Caption
             </label>
-            <input id="file-upload" type="file" accept="image/*" multiple onchange="handleUpload(event)"/>
+            <input id="file-upload" type="file" accept="image/*" onchange="handleUpload(event)"/>
         </div>
 
         <div class="gallery-container" id="gallery">
