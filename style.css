@@ -1,4 +1,3 @@
-/* --- 1. VARIABEL & RESET --- */
 :root {
     --primary-love: #ff4d6d;
     --glass-bg: rgba(0, 0, 0, 0.3);
@@ -7,11 +6,7 @@
     --sub-text: #e0e0e0;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -21,260 +16,86 @@ body {
     color: var(--text-color);
     min-height: 100vh;
     overflow-x: hidden;
-    transition: background 1s ease, color 1s ease; /* Untuk transisi fitur Auto-Schedule */
 }
 
-/* --- 2. ANIMASI LATAR BELAKANG --- */
 @keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-/* Efek Grainy/Stardust */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: url('https://www.transparenttextures.com/patterns/stardust.png');
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* Elemen Latar Belakang Pohon */
-.forest-background {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.tree {
-    position: absolute;
-    bottom: -20px;
-    transform-origin: bottom center;
-}
-
-.tree-left { left: -20px; width: 250px; animation: swayTree 8s ease-in-out infinite; }
-.tree-right { right: -30px; width: 180px; animation: swayTree 10s ease-in-out infinite; animation-delay: 1s; }
-
-@keyframes swayTree {
-    0%, 100% { transform: rotate(-1deg) skewX(-1deg); }
-    50% { transform: rotate(1.5deg) skewX(1deg); }
-}
-
-.leaves { animation: swayLeaves 5s ease-in-out infinite; transform-origin: center; }
-@keyframes swayLeaves {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.03) translateX(2px); }
-}
-
-/* --- 3. HEADER & TOMBOL --- */
-header {
-    text-align: center;
-    padding: 60px 20px;
-    position: relative;
-    z-index: 2;
-}
-
-.title {
-    font-family: 'Dancing Script', cursive;
-    font-size: 4rem;
-    color: var(--primary-love);
-    text-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    font-weight: 300;
-    color: var(--sub-text);
-    letter-spacing: 1.5px;
-}
-
-/* Kelompok Tombol Sejajar */
-.button-group {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    align-items: center;
-    margin-top: 25px;
-    transition: opacity 0.3s ease; /* Untuk fitur Screenshot */
-}
-
-.btn-estetik {
-    padding: 12px 25px;
-    border-radius: 30px;
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: 0.3s all ease;
-}
-
-.btn-estetik:hover {
-    background: var(--primary-love);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
-}
-
-/* --- 4. GALERI & KARTU FOTO --- */
-.upload-section {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.custom-file-upload {
-    display: inline-block;
-    padding: 12px 35px;
-    cursor: pointer;
-    background: white;
+/* Love Counter Style */
+#loveCounter {
+    margin-top: 15px;
+    font-size: 1rem;
     color: var(--primary-love);
     font-weight: 600;
-    border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    transition: 0.3s transform ease;
+}
+#loveCounter span {
+    background: rgba(255, 77, 109, 0.2);
+    padding: 2px 6px;
+    border-radius: 5px;
+    margin: 0 2px;
 }
 
-.custom-file-upload:hover { transform: scale(1.05); }
+/* Background Elements */
+.forest-background { position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; }
+.tree { position: absolute; bottom: -20px; transform-origin: bottom center; }
+.tree-left { left: -20px; width: 250px; animation: swayTree 8s ease-in-out infinite; }
+.tree-right { right: -30px; width: 180px; animation: swayTree 10s ease-in-out infinite; }
+@keyframes swayTree { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1.5deg); } }
 
+/* Header & Buttons */
+header { text-align: center; padding: 40px 20px; z-index: 2; }
+.title { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--primary-love); text-shadow: 0 0 15px rgba(255, 77, 109, 0.4); }
+.button-group { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+.btn-estetik { padding: 10px 20px; border-radius: 30px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: white; cursor: pointer; transition: 0.3s; }
+.btn-estetik:hover { background: var(--primary-love); transform: translateY(-3px); }
+
+/* Upload Section */
+.upload-section { text-align: center; margin-bottom: 30px; }
+#photoCaption { padding: 10px; border-radius: 15px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: white; outline: none; width: 220px; margin-bottom: 10px; text-align: center; }
+.custom-file-upload { display: inline-block; padding: 10px 25px; background: white; color: var(--primary-love); font-weight: 600; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+
+/* Gallery Polaroid Style */
 .gallery-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-    padding: 0 40px 50px;
-    max-width: 1200px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 20px 40px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
 .photo-card {
     position: relative;
-    background: var(--glass-bg);
-    backdrop-filter: blur(5px);
-    border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid var(--glass-border);
-    transition: 0.4s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    animation: fadeIn 0.8s ease forwards;
+    background: #ffffff; /* Putih Polaroid */
+    padding: 10px 10px 35px 10px;
+    border-radius: 2px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    transition: 0.4s;
+    transform: rotate(calc(var(--r, 0) * 1deg));
 }
+.photo-card:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 5; }
+.photo-card img { width: 100%; height: 160px; object-fit: cover; border: 1px solid #f0f0f0; }
+.photo-caption { font-family: 'Dancing Script', cursive; color: #333; font-size: 1.1rem; text-align: center; margin-top: 10px; word-wrap: break-word; }
 
-.photo-card img {
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-    display: block;
-    transition: 0.6s ease;
-}
-
-.photo-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-}
-
-.photo-card:hover img { transform: scale(1.1); }
-
-/* Overlay gradient di bawah foto agar teks (jika ada) terbaca */
-.photo-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 40%;
-    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-    pointer-events: none;
-}
-
-/* --- PERBAIKAN TOMBOL HAPUS SMOOTH --- */
-
+/* Delete Button Smooth */
 .delete-btn {
-    position: absolute;
-    top: 15px; 
-    right: 15px;
-    background: rgba(255, 77, 109, 0.9); /* Merah muda tema kamu */
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 35px; 
-    height: 35px;
-    cursor: pointer;
-    
-    /* INI KUNCINYA UNTUK EFEK SMOOTH */
-    display: flex; /* Selalu flex agar X di tengah */
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    z-index: 10;
-
-    /* Awalnya transparan dan tidak bisa di-klik */
-    opacity: 0; 
-    pointer-events: none; 
-    
-    /* Transisi halus selama 0.3 detik */
-    transition: all 0.3s ease-in-out;
+    position: absolute; top: 5px; right: 5px;
+    background: rgba(255, 77, 109, 0.9); color: white;
+    border: none; border-radius: 50%; width: 28px; height: 28px;
+    cursor: pointer; display: flex; justify-content: center; align-items: center;
+    opacity: 0; transition: 0.3s; z-index: 10;
 }
+.photo-card:hover .delete-btn { opacity: 1; }
 
-/* Saat kartu foto di-hover (di PC) atau di-tap (di HP) */
-.photo-card:hover .delete-btn {
-    opacity: 1; /* Muncul perlahan */
-    pointer-events: auto; /* Bisa di-klik */
-    transform: scale(1); /* Reset skala */
-}
+/* Overlays */
+.video-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: none; justify-content: center; align-items: center; z-index: 10000; }
+#surpriseVideo { max-width: 90%; max-height: 80vh; border-radius: 8px; }
 
-/* Efek tambahan saat tombol X-nya sendiri di-hover */
-.delete-btn:hover {
-    background: #ff0000; /* Merah menyala */
-    transform: scale(1.1); /* Sedikit membesar */
-}
-
-/* --- 5. OVERLAY (LOGIN & VIDEO) --- */
-#loginOverlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: #000;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(15px);
-}
-
-.video-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.95);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-}
-
-#surpriseVideo {
-    max-width: 90%;
-    max-height: 80vh;
-    border-radius: 10px;
-    box-shadow: 0 0 30px rgba(255,255,255,0.1);
-}
-
-/* Animasi Fade In */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsif HP */
 @media (max-width: 600px) {
     .title { font-size: 2.8rem; }
-    .gallery-container { padding: 0 20px 40px; }
+    .gallery-container { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); padding: 10px; }
+    .photo-card img { height: 130px; }
 }
