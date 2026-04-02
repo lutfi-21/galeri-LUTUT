@@ -167,3 +167,35 @@ function triggerSurprise() {
         if (player) player.setVolume(100);
     };
 }
+
+// --- LOGIKA TIME CAPSULE ---
+const unlockDate = new Date("2026-01-04T00:00:00"); // GANTI KE TANGGAL SURAT BISA DIBUKA (Misal: Ultah Dita)
+
+function openTimeCapsule() {
+    const modal = document.getElementById('capsuleModal');
+    const secret = document.getElementById('secretMessage');
+    const countdown = document.getElementById('countdownText');
+    const now = new Date();
+
+    modal.style.display = 'flex';
+
+    if (now >= unlockDate) {
+        // Jika sudah waktunya buka
+        document.getElementById('lockStatus').innerText = "🔓";
+        countdown.style.display = 'none';
+        secret.style.display = 'block';
+    } else {
+        // Jika belum waktunya
+        document.getElementById('lockStatus').innerText = "🔒";
+        secret.style.display = 'none';
+        
+        // Hitung selisih hari
+        const diff = unlockDate - now;
+        const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        countdown.innerHTML = `Sabar ya Lutfi & Ditut... <br><br> Pesan ini masih terkunci. <br> <strong>Bisa dibuka dalam ${days} hari lagi!</strong>`;
+    }
+}
+
+function closeCapsule() {
+    document.getElementById('capsuleModal').style.display = 'none';
+}
