@@ -174,9 +174,21 @@ function triggerSurprise() {
 
     isSurpriseActive = true;
     videoOverlay.style.display = 'flex';
+    
+    // --- FITUR VOLUME OTOMATIS ---
+    if (player && typeof player.setVolume === "function") {
+        player.setVolume(10); // Kecilkan musik ke 10% agar suara video terdengar
+    }
+
     video.play();
+
     video.onended = () => {
         videoOverlay.style.display = 'none';
         isSurpriseActive = false;
+        
+        // --- KEMBALIKAN VOLUME ---
+        if (player && typeof player.setVolume === "function") {
+            player.setVolume(100); // Balikkan musik ke 100% setelah video selesai
+        }
     };
 }
