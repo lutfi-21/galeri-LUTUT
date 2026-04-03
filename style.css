@@ -6,6 +6,7 @@
     --sub-text: #e0e0e0;
 }
 
+/* --- RESET & BASE --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -16,6 +17,7 @@ body {
     color: var(--text-color);
     min-height: 100vh;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 @keyframes gradientBG {
@@ -24,7 +26,20 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* Love Counter Style */
+/* --- CUSTOM SCROLLBAR (PRO) --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f0c29; }
+::-webkit-scrollbar-thumb { background: var(--primary-love); border-radius: 10px; }
+
+/* --- HEADER & TITLES --- */
+header { text-align: center; padding: 40px 20px; z-index: 2; position: relative; }
+.title { 
+    font-family: 'Dancing Script', cursive; 
+    font-size: 4rem; 
+    color: var(--primary-love); 
+    text-shadow: 0 0 15px rgba(255, 77, 109, 0.4); 
+}
+
 #loveCounter {
     margin-top: 15px;
     font-size: 1rem;
@@ -38,45 +53,58 @@ body {
     margin: 0 2px;
 }
 
-/* Background Elements */
-.forest-background { position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; }
-.tree { position: absolute; bottom: -20px; transform-origin: bottom center; }
-.tree-left { left: -20px; width: 250px; animation: swayTree 8s ease-in-out infinite; }
-.tree-right { right: -30px; width: 180px; animation: swayTree 10s ease-in-out infinite; }
-@keyframes swayTree { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1.5deg); } }
-
-/* Header & Buttons */
-header { text-align: center; padding: 40px 20px; z-index: 2; }
-.title { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--primary-love); text-shadow: 0 0 15px rgba(255, 77, 109, 0.4); }
-.button-group { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
-.btn-estetik { padding: 10px 20px; border-radius: 30px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: white; cursor: pointer; transition: 0.3s; }
-.btn-estetik:hover { background: var(--primary-love); transform: translateY(-3px); }
-
-/* Upload Section */
-.upload-section { text-align: center; margin-bottom: 30px; }
-#photoCaption { padding: 10px; border-radius: 15px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: white; outline: none; width: 220px; margin-bottom: 10px; text-align: center; }
-.custom-file-upload { display: inline-block; padding: 10px 25px; background: white; color: var(--primary-love); font-weight: 600; border-radius: 50px; cursor: pointer; transition: 0.3s; }
-
-/* Gallery Polaroid Style */
+/* --- PHOTO GALLERY GRID --- */
 .gallery-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
-    padding: 20px 40px;
-    max-width: 1100px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 30px;
+    padding: 40px;
+    max-width: 1200px;
     margin: 0 auto;
+    perspective: 1000px;
 }
 
-/* --- GABUNGAN ANIMASI PROFESIONAL --- */
+/* --- THE NEW PROFESSIONAL POLAROID CARD --- */
 .photo-card {
-    /* 1. Efek Muncul Pertama Kali (Fade In dari Bawah) */
+    background: #ffffff; /* BINGKAI PUTIH WAJIB */
+    padding: 12px 12px 40px 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
+    border-radius: 2px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
+    cursor: pointer;
+    
+    /* LOGIKA ANIMASI GABUNGAN */
     opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 1s ease forwards, float 6s ease-in-out infinite 1.2s; 
-    /* Penjelasan: fadeInUp jalan dulu, baru float jalan setelah delay 1.2 detik */
+    transform: translateY(40px);
+    animation: fadeInUp 1.2s ease forwards, float 6s ease-in-out infinite 1.5s;
 }
 
-/* Animasi Muncul dari Bawah */
+.photo-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border: 1px solid #f0f0f0;
+    display: block;
+}
+
+.photo-caption {
+    font-family: 'Dancing Script', cursive;
+    color: #333333; /* Warna gelap agar terbaca di bingkai putih */
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 12px;
+    word-wrap: break-word;
+    font-weight: bold;
+}
+
+.photo-card:hover {
+    transform: scale(1.1) rotate(0deg) !important;
+    z-index: 100;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+/* --- ANIMASI SAKTI --- */
 @keyframes fadeInUp {
     to { 
         opacity: 1; 
@@ -84,24 +112,24 @@ header { text-align: center; padding: 40px 20px; z-index: 2; }
     }
 }
 
-/* Animasi Melayang (Floating) - Tetap Kita Pakai */
 @keyframes float {
     0%, 100% { transform: translateY(0) rotate(calc(var(--r) * 1deg)); }
-    50% { transform: translateY(-10px) rotate(calc(var(--r) * 0.5deg)); }
+    50% { transform: translateY(-12px) rotate(calc(var(--r) * 0.5deg)); }
 }
 
-/* Kasih jeda muncul antar foto (Stagger Effect) biar keren satu-satu munculnya */
-.photo-card:nth-child(1) { animation-delay: 0.1s, 1.3s; }
-.photo-card:nth-child(2) { animation-delay: 0.3s, 1.5s; }
-.photo-card:nth-child(3) { animation-delay: 0.5s, 1.7s; }
-.photo-card:nth-child(4) { animation-delay: 0.7s, 1.9s; }
-/* Dan seterusnya... */
+/* --- STAGGER EFFECT (MUNCUL BERGANTIAN) --- */
+.photo-card:nth-child(1) { animation-delay: 0.1s, 1.6s; }
+.photo-card:nth-child(2) { animation-delay: 0.3s, 1.8s; }
+.photo-card:nth-child(3) { animation-delay: 0.5s, 2.0s; }
+.photo-card:nth-child(4) { animation-delay: 0.7s, 2.2s; }
 
-.photo-card:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 5; }
-.photo-card img { width: 100%; height: 160px; object-fit: cover; border: 1px solid #f0f0f0; }
-.photo-caption { font-family: 'Dancing Script', cursive; color: #333; font-size: 1.1rem; text-align: center; margin-top: 10px; word-wrap: break-word; }
+/* --- FITUR LAINNYA --- */
+.btn-estetik { padding: 10px 20px; border-radius: 30px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: white; cursor: pointer; transition: 0.3s; }
+.btn-estetik:hover { background: var(--primary-love); transform: translateY(-3px); }
 
-/* Delete Button Smooth */
+.upload-section { text-align: center; margin-bottom: 30px; }
+#photoCaption { padding: 10px; border-radius: 15px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: white; outline: none; width: 220px; margin-bottom: 10px; text-align: center; }
+
 .delete-btn {
     position: absolute; top: 5px; right: 5px;
     background: rgba(255, 77, 109, 0.9); color: white;
@@ -111,169 +139,48 @@ header { text-align: center; padding: 40px 20px; z-index: 2; }
 }
 .photo-card:hover .delete-btn { opacity: 1; }
 
-/* Overlays */
-.video-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: none; justify-content: center; align-items: center; z-index: 10000; }
-#surpriseVideo { max-width: 90%; max-height: 80vh; border-radius: 8px; }
-
-@media (max-width: 600px) {
-    .title { font-size: 2.8rem; }
-    .gallery-container { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); padding: 10px; }
-    .photo-card img { height: 130px; }
-}
-
-/* Styling Amplop Kapsul Waktu */
-.time-capsule-container {
-    text-align: center;
-    margin: 30px 0;
-}
-
-.envelope {
-    display: inline-block;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(10px);
-    padding: 20px 40px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.envelope:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 77, 109, 0.1);
-}
-
-.envelope p {
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.5rem;
-    color: white;
-}
-
-/* Modal Popup */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 11000;
-}
-
-.modal-content {
-    background: white;
-    color: #333;
-    padding: 30px;
-    border-radius: 10px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    position: relative;
-}
-
-.close-modal {
-    position: absolute;
-    top: 10px; right: 15px;
-    font-size: 25px;
-    cursor: pointer;
-}
-
-#secretMessage {
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.6;
-    margin-top: 20px;
-    text-align: left;
-}
-
-/* --- PREMIUM CINEMATIC PRELOADER --- */
+/* --- PREMIUM PRELOADER --- */
 #loader {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #000000; /* Hitam pekat agar premium */
-    z-index: 20000;
-    display: flex;
-    flex-direction: column; /* Biar teks penjelas di bawah logo */
-    justify-content: center;
-    align-items: center;
-    transition: opacity 1s ease-in-out, visibility 1s;
-    overflow: hidden;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000000; z-index: 20000;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    transition: opacity 1s ease-in-out, visibility 1s; overflow: hidden;
 }
-
-/* Efek Flicker/Scanline Layar TV di Latar */
 #loader::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-    background-size: 100% 4px;
-    z-index: 20001;
-    opacity: 0.15;
-    pointer-events: none;
-    animation: flicker 0.15s infinite;
+    background-size: 100% 4px; z-index: 20001; opacity: 0.15; animation: flicker 0.15s infinite;
 }
-
-/* Styling Logo LUTUT */
 .loader-logo {
-    font-family: 'Dancing Script', cursive;
-    color: #ffffff; /* Putih bersih */
-    font-size: 4rem;
-    letter-spacing: 5px; /* Jarak huruf lebar biar elegan */
-    text-align: center;
-    position: relative;
-    z-index: 20002;
-    /* Efek Neon/Glowing Putih Halus */
-    text-shadow: 
-        0 0 10px #ffffff,
-        0 0 20px #ffffff,
-        0 0 30px var(--primary-love),
-        0 0 40px var(--primary-love);
-    
-    /* Animasi Masuk: Muncul Pelan + Membesar */
+    font-family: 'Dancing Script', cursive; color: #ffffff; font-size: 4rem;
+    letter-spacing: 5px; text-align: center; z-index: 20002;
+    text-shadow: 0 0 10px #ffffff, 0 0 20px var(--primary-love);
     animation: premiumEntrance 2s ease-out forwards;
 }
 
-/* Teks Kecil Penjelas (Biar kayak Production House) */
-.loader-sub {
-    font-family: 'Poppins', sans-serif;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.7rem;
-    letter-spacing: 4px;
-    margin-top: 15px;
-    text-transform: uppercase;
-    z-index: 20002;
-    opacity: 0;
-    animation: fadeInSub 1s ease-in forwards;
-    animation-delay: 1.5s; /* Muncul setelah logo utama */
-}
-
-/* --- ANIMASI SAKTI --- */
-
-/* Animasi Masuk Logo: Fade In + Skala */
 @keyframes premiumEntrance {
     0% { opacity: 0; transform: scale(0.9); filter: blur(5px); }
     100% { opacity: 1; transform: scale(1); filter: blur(0); }
 }
 
-/* Animasi Flicker Layar */
 @keyframes flicker {
-    0% { opacity: 0.15; }
-    50% { opacity: 0.1; }
-    100% { opacity: 0.15; }
+    0%, 100% { opacity: 0.15; } 50% { opacity: 0.1; }
 }
 
-/* Animasi Fade In Teks Sub */
-@keyframes fadeInSub {
-    to { opacity: 1; }
+/* --- TIME CAPSULE STYLING --- */
+.envelope {
+    display: inline-block; background: var(--glass-bg);
+    border: 1px solid var(--glass-border); backdrop-filter: blur(10px);
+    padding: 20px 40px; border-radius: 15px; cursor: pointer; transition: 0.3s;
 }
+.envelope:hover { transform: translateY(-5px); background: rgba(255, 77, 109, 0.1); }
+.modal-content { background: white; color: #333; padding: 30px; border-radius: 10px; max-width: 400px; width: 90%; text-align: center; position: relative; }
 
-/* Saat Transisi Keluar (Melalui JS) */
-#loader.fade-out {
-    opacity: 0;
-    visibility: hidden;
-}
-
-/* Responsif buat HP */
+/* --- RESPONSIVE --- */
 @media (max-width: 600px) {
-    .loader-logo { font-size: 2.5rem; letter-spacing: 3px; }
+    .title { font-size: 2.8rem; }
+    .gallery-container { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 15px; gap: 15px; }
+    .photo-card { padding: 8px 8px 30px 8px; }
+    .photo-card img { height: 140px; }
+    .loader-logo { font-size: 2.5rem; }
 }
