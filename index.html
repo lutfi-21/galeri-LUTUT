@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Our Eternal Memories | LUTUT</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -14,60 +14,49 @@
     </div>
 
     <div id="loginOverlay">
-        <h2 style="margin-bottom:20px; letter-spacing: 3px; font-weight: 300;">EXCLUSIVE ACCESS</h2>
+        <h2 style="letter-spacing: 3px; font-weight: 300; margin-bottom: 20px;">EXCLUSIVE ACCESS</h2>
         <input type="password" id="passInput" placeholder="Masukkan Sandi...">
         <button onclick="checkPass()" class="btn-login">Buka Galeri</button>
-        <p id="errorMsg" style="color:#ff4d6d; margin-top:15px; font-size:13px; display:none;">Sandi Salah, Lutfi!</p>
+        <p id="errorMsg">Sandi Salah, Lutfi!</p>
     </div>
 
-    <div class="forest-background">
-        <div class="tree tree-left">
-            <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50,200 L50,140" stroke="#0a0a1a" stroke-width="4" fill="none" />
-                <ellipse cx="50" cy="100" rx="35" ry="60" fill="#161625" opacity="0.8"/>
-            </svg>
-        </div>
-        <div class="tree tree-right">
-            <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50,200 L50,150" stroke="#0a0a1a" stroke-width="3" fill="none" />
-                <ellipse cx="50" cy="110" rx="30" ry="50" fill="#161625" opacity="0.8"/>
-            </svg>
-        </div>
-    </div>
-    
     <div id="player" style="display:none;"></div>
 
-    <header>
-        <h1 class="title">This is LUTUT</h1>
-        <p class="subtitle">Lutfi Dan Ditut Anjayyy.</p>
-        <div id="loveCounter">Memuat hari bahagia...</div>
-        
-        <div class="button-group">
-            <button id="musicBtn" onclick="togglePlay()" class="btn-estetik">🎵 Play Music</button>
-            <button id="captureBtn" onclick="takeScreenshot()" class="btn-estetik">📸 Capture Moment</button>
-        </div>
-    </header>
+    <div id="mainContent" style="display:none; opacity: 0; transition: 1s;">
+        <header>
+            <h1 class="title">This is LUTUT</h1>
+            <p class="subtitle">Lutfi Dan Ditut Anjayyy.</p>
+            <div id="loveCounter">Menghitung kebahagiaan...</div>
+            
+            <div class="button-group">
+                <button id="musicBtn" onclick="togglePlay()" class="btn-estetik">🎵 Play Music</button>
+                <button id="captureBtn" onclick="takeScreenshot()" class="btn-estetik">📸 Capture</button>
+            </div>
+        </header>
 
-    <main>
-        <div class="time-capsule-container">
-            <div id="capsuleIcon" onclick="openTimeCapsule()">
-                <div class="envelope">
+        <main>
+            <div class="time-capsule-container">
+                <div class="envelope" onclick="openTimeCapsule()">
                     <span id="lockStatus">🔒</span>
                     <p>Surat Masa Depan</p>
                 </div>
             </div>
-        </div>
 
-        <div class="upload-section">
-            <input type="text" id="photoCaption" placeholder="Tulis caption momen ini..." maxlength="40">
-            <br>
-            <label for="file-upload" class="custom-file-upload">+ Tambah Foto</label>
-            <input id="file-upload" type="file" accept="image/*" onchange="handleUpload(event)"/>
-        </div>
-
-        <div class="gallery-container" id="gallery">
+            <div class="upload-section">
+                <input type="text" id="photoCaption" placeholder="Tulis caption..." maxlength="40">
+                <br>
+                <label for="file-upload" class="custom-file-upload">+ Tambah Foto</label>
+                <input id="file-upload" type="file" accept="image/*" onchange="handleUpload(event)"/>
             </div>
-    </main>
+
+            <div class="gallery-container" id="gallery"></div>
+        </main>
+
+        <footer>
+            <p>MADE WITH ❤️ BY LUTFI</p>
+            <p>&copy; 2026 LUTUT PROJECT • FOREVER & ALWAYS</p>
+        </footer>
+    </div>
 
     <div id="capsuleModal" class="modal-overlay" onclick="closeCapsule()">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -85,21 +74,10 @@
         </div>
     </div>
 
-    <div id="videoOverlay" class="video-overlay">
-        <video id="surpriseVideo">
-            <source src="pesan-video.mp4" type="video/mp4">
-        </video>
-    </div>
-
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="script.js"></script>
-
-    <footer>
-        <p>MADE WITH ❤️ BY LUTFI</p>
-        <p style="margin-top: 5px;">&copy; 2026 LUTUT PROJECT • FOREVER & ALWAYS</p>
-    </footer>
 </body>
 </html>
