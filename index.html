@@ -14,7 +14,7 @@
     </div>
 
     <div id="loginOverlay">
-        <h2 style="letter-spacing: 3px; font-weight: 300; margin-bottom: 25px;">EXCLUSIVE ACCESS</h2>
+        <h2>EXCLUSIVE ACCESS</h2>
         <input type="password" id="passInput" placeholder="Masukkan Sandi...">
         <button onclick="checkPass()" class="btn-login">Buka Galeri</button>
         <p id="errorMsg">Sandi Salah, Lutfi!</p>
@@ -29,20 +29,23 @@
         </div>
     </div>
 
-    <div id="player" style="display:none;"></div>
-
     <div id="videoOverlay" class="video-overlay">
-        <video id="surpriseVideo">
-            <source src="pesan-video.mp4" type="video/mp4">
-        </video>
-        <button id="skipVideoBtn" onclick="closeVideo()">Lanjut Ke Galeri &rarr;</button>
+        <div class="video-box">
+            <video id="surpriseVideo">
+                <source src="pesan-video.mp4" type="video/mp4">
+            </video>
+            <button class="btn-close-video" onclick="closeVideo()">Lanjut Ke Galeri &rarr;</button>
+        </div>
     </div>
 
-    <div id="mainContent" style="display:none; opacity: 0;">
+    <div id="player" style="display:none;"></div>
+
+    <div id="mainContent">
         <header>
             <h1 class="title">This is LUTUT</h1>
             <p class="subtitle">Lutfi Dan Ditut Anjayyy.</p>
             <div id="loveCounter">Memuat hari bahagia...</div>
+            
             <div class="button-group">
                 <button id="musicBtn" onclick="togglePlay()" class="btn-estetik">🎵 Play Music</button>
                 <button id="captureBtn" onclick="takeScreenshot()" class="btn-estetik">📸 Capture</button>
@@ -50,17 +53,16 @@
         </header>
 
         <main>
-            <div class="time-capsule-section">
+            <div class="capsule-section">
                 <div class="envelope" onclick="openTimeCapsule()">
                     <span id="lockStatus">🔒</span>
                     <p>Surat Masa Depan</p>
                 </div>
             </div>
 
-            <div class="upload-section">
-                <input type="text" id="photoCaption" placeholder="Tulis caption..." maxlength="40">
-                <br>
-                <label for="file-upload" class="custom-file-upload">+ Tambah Foto</label>
+            <div class="upload-area">
+                <input type="text" id="photoCaption" placeholder="Tulis caption...">
+                <label for="file-upload" class="btn-upload">+ Tambah Foto</label>
                 <input id="file-upload" type="file" accept="image/*" onchange="handleUpload(event)"/>
             </div>
 
@@ -75,14 +77,14 @@
 
     <div id="capsuleModal" class="modal-overlay" onclick="closeCapsule()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close-modal" onclick="closeCapsule()">&times;</span>
-            <h2>Pesan Masa Depan</h2>
+            <span class="close-x" onclick="closeCapsule()">&times;</span>
+            <h2 id="modalTitle">Pesan Masa Depan</h2>
             <hr>
             <div id="modalBody">
                 <p id="countdownText"></p>
                 <div id="secretMessage" style="display:none;">
                     Halo Ditut... <br><br>
-                    Semoga kita masih sama-sama ya, amin paling serius!
+                    Semoga kita masih sama-sama ya di masa depan, amin!
                 </div>
             </div>
         </div>
