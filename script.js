@@ -44,14 +44,23 @@ function checkPass() {
 
 // --- 3. FIREBASE & RENDER ---
 window.onload = function() {
-    // Tambahkan di baris paling atas di dalam window.onload = function() { ...
-const loader = document.getElementById('loader');
-if(loader) {
-    setTimeout(() => {
-        loader.style.opacity = '0';
-        setTimeout(() => loader.remove(), 800);
-    }, 1500); // Tampil selama 1.5 detik
-}
+    // --- PREMIUM LOADER LOGIC ---
+    const loader = document.getElementById('loader');
+    if(loader) {
+        // Beri jeda 3 detik (3000ms) agar animasinya tuntas dinikmati
+        setTimeout(() => {
+            // Tambahkan class untuk fade-out (sesuai CSS baru)
+            loader.classList.add('fade-out');
+            
+            // Hapus elemen dari DOM setelah transisi CSS selesai (1 detik)
+            setTimeout(() => {
+                if(loader.parentNode) loader.parentNode.removeChild(loader);
+            }, 1000); 
+        }, 3000); 
+    }
+    
+    // ... sisa kode window.onload kamu yang lain (Firebase, Love Counter, dll.) ...
+};
     const photoRef = database.ref('photos');
     photoRef.on('child_added', (snapshot) => {
         const data = snapshot.val();
