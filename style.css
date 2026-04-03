@@ -1,56 +1,78 @@
-:root { --primary-love: #ff4d6d; --glass-bg: rgba(0, 0, 0, 0.5); --glass-border: rgba(255, 255, 255, 0.15); }
+:root { --primary: #ff4d6d; --glass: rgba(0,0,0,0.5); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    font-family: 'Poppins', sans-serif; background: #0f0c29; color: white;
-    min-height: 100vh; overflow-x: hidden;
-}
+body { font-family: 'Poppins', sans-serif; background: #0f0c29; color: white; overflow-x: hidden; }
 
-/* --- LOGO & LOGIN (TENGAH) --- */
+/* 1. LOADER & LOGIN (FULL CENTER) */
 #loader, #loginOverlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #000; z-index: 100000; display: flex; flex-direction: column;
-    justify-content: center; align-items: center; text-align: center; transition: 0.8s;
+    position: fixed; inset: 0; background: #000; z-index: 10000;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
 }
-.loader-logo { font-family: 'Dancing Script', cursive; font-size: 4rem; text-shadow: 0 0 20px var(--primary-love); }
-#loginOverlay input { padding: 15px; border-radius: 12px; border: none; width: 280px; margin-bottom: 20px; text-align: center; }
-.btn-login { padding: 12px 40px; border-radius: 30px; background: var(--primary-love); color: white; border: none; font-weight: 600; cursor: pointer; }
-#errorMsg { color: var(--primary-love); margin-top: 15px; display: none; }
+#loginOverlay { z-index: 9000; background: rgba(0,0,0,0.95); transition: 0.8s; }
+.loader-logo { font-family: 'Dancing Script', cursive; font-size: 4rem; text-shadow: 0 0 20px var(--primary); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
-/* --- POHON ANIMASI --- */
-.forest-background { position: fixed; bottom: 0; width: 100%; height: 250px; pointer-events: none; z-index: 1; }
-.tree { position: absolute; bottom: -20px; width: 120px; opacity: 0.6; transition: 1s; }
-.tree-left { left: -20px; }
-.tree-right { right: -20px; transform: scaleX(-1); }
+#loginOverlay input { padding: 15px; border-radius: 10px; border: none; width: 280px; margin-bottom: 20px; text-align: center; font-size: 16px; }
+.btn-login { padding: 12px 40px; border-radius: 30px; background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
+#errorMsg { color: var(--primary); margin-top: 15px; display: none; }
 
-/* --- VIDEO OVERLAY (TENGAH) --- */
+/* 2. BACKGROUND FOREST */
+.forest-background { position: fixed; bottom: 0; width: 100%; height: 250px; z-index: 1; pointer-events: none; }
+.tree { position: absolute; bottom: -10px; width: 150px; opacity: 0.5; }
+.tree-left { left: -30px; }
+.tree-right { right: -30px; transform: scaleX(-1); }
+
+/* 3. VIDEO SHAKE OVERLAY */
 .video-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
-    z-index: 99998; display: none; flex-direction: column; justify-content: center; align-items: center;
+    position: fixed; inset: 0; background: #000; z-index: 11000;
+    display: none; justify-content: center; align-items: center;
 }
-#surpriseVideo { width: 90%; max-width: 500px; border-radius: 15px; box-shadow: 0 0 30px var(--primary-love); }
-#skipVideoBtn { margin-top: 20px; background: transparent; border: 1px solid white; color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
+.video-box { width: 90%; max-width: 500px; text-align: center; }
+#surpriseVideo { width: 100%; border-radius: 15px; box-shadow: 0 0 30px var(--primary); }
+.btn-close-video { margin-top: 20px; padding: 10px 25px; border: 1px solid white; background: none; color: white; border-radius: 20px; cursor: pointer; }
 
-/* --- GALLERY & POLAROID --- */
-.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding: 30px; }
+/* 4. MAIN CONTENT */
+#mainContent { opacity: 0; display: none; position: relative; z-index: 5; transition: 1s; }
+header { text-align: center; padding: 60px 20px; }
+.title { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--primary); }
+#loveCounter { margin: 15px 0; color: var(--primary); font-weight: 600; letter-spacing: 1px; }
+#loveCounter span { background: rgba(255,77,109,0.2); padding: 2px 6px; border-radius: 4px; }
+
+/* 5. GALLERY POLAROID */
+.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 25px; padding: 25px; }
 .photo-card {
-    background: white; padding: 10px 10px 40px 10px; border-radius: 2px;
+    background: white; padding: 12px 12px 40px 12px; border-radius: 2px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5); position: relative;
-    transform: rotate(calc(var(--r, 0) * 1deg)); transition: 0.4s; opacity: 0; animation: fadeInUp 0.8s forwards;
+    transform: rotate(calc(var(--r, 0) * 1deg)); transition: 0.4s;
 }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px) rotate(0deg); } to { opacity: 1; transform: translateY(0) rotate(calc(var(--r, 0) * 1deg)); } }
-.photo-card:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 10; }
+.photo-card:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 50; box-shadow: 0 15px 40px rgba(0,0,0,0.7); }
 .photo-card img { width: 100%; height: 180px; object-fit: cover; }
-.photo-caption { font-family: 'Dancing Script', cursive; color: #333; text-align: center; margin-top: 10px; font-weight: bold; }
+.photo-caption { font-family: 'Dancing Script', cursive; color: #333; text-align: center; margin-top: 10px; font-weight: bold; font-size: 1.1rem; }
 
-/* TOMBOL X (HANYA MUNCUL SAAT HOVER) */
-.delete-btn { position: absolute; top: 5px; right: 5px; background: var(--primary-love); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; opacity: 0; transition: 0.3s; }
+/* TOMBOL X (HANYA MUNCUL SAAT HOVER/SENTUH) */
+.delete-btn {
+    position: absolute; top: 5px; right: 5px; background: var(--primary); color: white;
+    border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer;
+    opacity: 0; transition: 0.3s;
+}
 .photo-card:hover .delete-btn { opacity: 1; }
 
-/* --- SURAT & OTHERS --- */
-.time-capsule-section { display: flex; justify-content: center; padding: 30px; }
-.envelope { background: var(--glass-bg); padding: 20px 40px; border-radius: 15px; cursor: pointer; border: 1px solid var(--glass-border); text-align: center; }
-.envelope p { font-family: 'Dancing Script', cursive; font-size: 1.5rem; }
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 110000; }
-.modal-content { background: white; color: #333; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
+/* 6. BUTTONS & UPLOAD */
+.button-group { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+.btn-estetik { padding: 10px 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); background: var(--glass); color: white; cursor: pointer; transition: 0.3s; }
+.upload-area { text-align: center; margin: 30px 0; }
+#photoCaption { padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: var(--glass); color: white; width: 240px; margin-bottom: 10px; }
+.btn-upload { background: white; color: var(--primary); padding: 8px 25px; border-radius: 20px; font-weight: 600; cursor: pointer; display: inline-block; }
+
+/* 7. TIME CAPSULE */
+.capsule-section { display: flex; justify-content: center; padding: 20px; }
+.envelope { background: var(--glass); padding: 20px 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; text-align: center; }
+.envelope:hover { transform: translateY(-5px); background: rgba(255,77,109,0.1); }
+.envelope p { font-family: 'Dancing Script', cursive; font-size: 1.5rem; margin-top: 5px; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 12000; }
+.modal-content { background: white; color: #333; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; position: relative; }
+.close-x { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: #999; }
 
 @media (max-width: 600px) { .gallery-container { grid-template-columns: 1fr 1fr; gap: 15px; } .photo-card img { height: 140px; } }
+footer { text-align: center; padding: 40px; font-size: 0.8rem; opacity: 0.5; }
