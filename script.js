@@ -93,7 +93,7 @@ function deletePhoto(key) { if(confirm("Hapus kenangan ini?")) database.ref('pho
 
 // 5. OTHER FEATURES
 function startLoveCounter() {
-    const start = new Date("2025-01-04T00:00:00");
+    const start = new Date("2026-01-04T00:00:00");
     setInterval(() => {
         const diff = new Date() - start;
         const d = Math.floor(diff / 86400000);
