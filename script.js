@@ -1,3 +1,4 @@
+// --- FIREBASE CONFIG ---
 const firebaseConfig = {
     apiKey: "AIzaSyB35KZFBHlHVhfs61lRWODm_xaYM-v-xJY",
     authDomain: "galeri-lutut.firebaseapp.com",
@@ -10,24 +11,23 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-var player; 
-let isSurpriseActive = false;
-let lastX = 0;
+let player;
 
-// --- 1. FITUR LOVE COUNTER ---
-function startLoveCounter() {
-    const startDate = new Date("2026-01-04T00:00:00"); // GANTI TANGGAL JADIAN KAMU DI SINI
-    setInterval(() => {
-        const now = new Date();
-        const diff = now - startDate;
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const m = Math.floor((diff / (1000 * 60)) % 60);
-        const s = Math.floor((diff / 1000) % 60);
-        document.getElementById('loveCounter').innerHTML = 
-            `Sudah <span>${d}D</span> <span>${h}H</span> <span>${m}M</span> <span>${s}S</span> Bersama ❤️`;
-    }, 1000);
-}
+// --- 1. LOADER & INIT ---
+window.onload = function() {
+    const loader = document.getElementById('loader');
+    setTimeout(() => {
+        if(loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => { loader.style.display = 'none'; }, 800);
+        }
+    }, 2500);
+
+    // Enter Key Listener
+    document.getElementById("passInput").addEventListener("keyup", (e) => {
+        if (e.key === "Enter") checkPass();
+    });
+};
 
 // --- 2. LOGIN ---
 function checkPass() {
@@ -36,192 +36,125 @@ function checkPass() {
     if (input === 'LutfiDita2026') {
         overlay.style.opacity = "0";
         setTimeout(() => { overlay.style.display = 'none'; }, 500);
-        startLoveCounter(); // Mulai counter saat login
+        startLoveCounter();
+        loadPhotos(); // Baru panggil Firebase setelah login
     } else {
         document.getElementById('errorMsg').style.display = 'block';
     }
 }
 
-// --- 3. FIREBASE & RENDER ---
-window.onload = function() {
-    // --- 1. LOGIKA LOADER PREMIUM (Pasti Hilang) ---
-    const loader = document.getElementById('loader');
-    if (loader) {
-        setTimeout(() => {
-            loader.style.opacity = '0';
-            loader.style.visibility = 'hidden';
-            // Hapus elemen dari layar setelah transisi selesai
-            setTimeout(() => {
-                loader.remove();
-            }, 1000); 
-        }, 3000); // Tampil selama 3 detik
-    }
+// --- 3. LOVE COUNTER ---
+function startLoveCounter() {
+    const startDate = new Date("2025-01-04T00:00:00"); // Sesuaikan tanggal jadian
+    setInterval(() => {
+        const diff = new Date() - startDate;
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+        document.getElementById('loveCounter').innerHTML = 
+            `Sudah <span>${d}HARI</span> <span>${h}JAM</span> <span>${m}MENIT</span> <span>${s}DETIK</span> Bersama ❤️`;
+    }, 1000);
+}
 
-    // --- 2. LOGIKA FIREBASE (PENTING!) ---
+// --- 4. FIREBASE LOGIC ---
+function loadPhotos() {
     const photoRef = database.ref('photos');
-    
-    // Ambil foto yang sudah ada & dengerin foto baru
     photoRef.on('child_added', (snapshot) => {
         const data = snapshot.val();
-        // Pastikan fungsi renderPhoto kamu sudah mendukung parameter caption & type
-        renderPhoto(data.image, snapshot.key, data.caption, data.type);
+        renderPhoto(data.image, snapshot.key, data.caption);
     });
-
-    // Dengerin kalau ada foto yang dihapus
     photoRef.on('child_removed', (snapshot) => {
         const el = document.getElementById(snapshot.key);
         if (el) el.remove();
     });
+}
 
-    // --- 3. INPUT SANDI (ENTER LISTENER) ---
-    const pInput = document.getElementById("passInput");
-    if (pInput) {
-        pInput.addEventListener("keyup", function(e) {
-            if (e.key === "Enter") checkPass();
-        });
-    }
-
-    // --- 4. TEMA OTOMATIS (OPSIONAL) ---
-    applyTimeTheme();
-};
-
-function renderPhoto(imageSrc, key, caption = "") {
+function renderPhoto(src, key, caption) {
     const gallery = document.getElementById('gallery');
-    const placeholder = document.querySelector('.placeholder');
-    if (placeholder) placeholder.remove();
-
     const div = document.createElement('div');
     div.className = 'photo-card';
     div.id = key;
-    const r = (Math.random() * 4) - 2; // Miring acak -2 sampai 2 derajat
+    
+    const r = (Math.random() * 6) - 3; // Rotasi acak miring
     div.style.setProperty('--r', r);
     
     div.innerHTML = `
         <button class="delete-btn" onclick="deletePhoto('${key}')">&times;</button>
-        <img src="${imageSrc}" loading="lazy">
-        <div class="photo-caption">${caption}</div>
+        <img src="${src}" loading="lazy">
+        <div class="photo-caption">${caption || ''}</div>
     `;
     gallery.appendChild(div);
 }
 
 function handleUpload(event) {
     const file = event.target.files[0];
-    const captionText = document.getElementById('photoCaption').value || "Our Moment ❤️";
+    const caption = document.getElementById('photoCaption').value || "Our Memories ❤️";
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = (e) => {
             database.ref('photos').push({
                 image: e.target.result,
-                caption: captionText,
+                caption: caption,
                 timestamp: Date.now()
             });
-            document.getElementById('photoCaption').value = ""; // Reset caption
+            document.getElementById('photoCaption').value = "";
         };
         reader.readAsDataURL(file);
     }
 }
 
 function deletePhoto(key) {
-    if (confirm("Hapus kenangan ini?")) database.ref('photos/' + key).remove();
+    if (confirm("Hapus foto ini?")) database.ref('photos/' + key).remove();
 }
 
-// --- 4. YOUTUBE ---
+// --- 5. TIME CAPSULE ---
+function openTimeCapsule() {
+    const unlockDate = new Date("2027-01-04T00:00:00"); // Tanggal kapsul bisa dibuka
+    const now = new Date();
+    const modal = document.getElementById('capsuleModal');
+    modal.style.display = 'flex';
+
+    if (now >= unlockDate) {
+        document.getElementById('lockStatus').innerText = "🔓";
+        document.getElementById('countdownText').style.display = 'none';
+        document.getElementById('secretMessage').style.display = 'block';
+    } else {
+        const diff = unlockDate - now;
+        const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        document.getElementById('countdownText').innerHTML = `Sabar ya... <br> Pesan ini baru bisa dibuka dalam <b>${days} hari lagi</b>.`;
+    }
+}
+
+function closeCapsule() { document.getElementById('capsuleModal').style.display = 'none'; }
+
+// --- 6. MUSIC & SCREENSHOT ---
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: '0', width: '0', videoId: 'uaqnG8IvXcI',
-        playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'uaqnG8IvXcI' },
-        events: { 'onReady': () => console.log("YouTube Ready!") }
+        playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'uaqnG8IvXcI' }
     });
 }
 
 function togglePlay() {
-    if (player && player.getPlayerState) {
-        const state = player.getPlayerState();
-        if (state == 1) {
-            player.pauseVideo();
-            document.getElementById('musicBtn').innerText = "🎵 Play Music";
-        } else {
-            player.playVideo();
-            document.getElementById('musicBtn').innerText = "⏸ Pause Music";
-            initMotionSensor();
-        }
+    const state = player.getPlayerState();
+    if (state == 1) {
+        player.pauseVideo();
+        document.getElementById('musicBtn').innerText = "🎵 Play Music";
+    } else {
+        player.playVideo();
+        document.getElementById('musicBtn').innerText = "⏸ Pause Music";
     }
 }
 
-// --- 5. SCREENSHOT & SENSOR ---
 function takeScreenshot() {
-    const btnGroup = document.querySelector('.button-group');
-    btnGroup.style.opacity = '0';
-    html2canvas(document.body, { useCORS: true, allowTaint: true }).then(canvas => {
+    const btn = document.querySelector('.button-group');
+    btn.style.opacity = '0';
+    html2canvas(document.body).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'Moment-Lutfi.png';
+        link.download = 'Kenangan-LUTUT.png';
         link.href = canvas.toDataURL();
         link.click();
-        btnGroup.style.opacity = '1';
+        btn.style.opacity = '1';
     });
-}
-
-function initMotionSensor() {
-    if (typeof DeviceMotionEvent.requestPermission === 'function') {
-        DeviceMotionEvent.requestPermission().then(state => {
-            if (state === 'granted') window.addEventListener('devicemotion', handleMotion);
-        });
-    } else {
-        window.addEventListener('devicemotion', handleMotion);
-    }
-}
-
-function handleMotion(event) {
-    if (isSurpriseActive) return;
-    let acc = event.accelerationIncludingGravity;
-    if (!acc) return;
-    let deltaX = Math.abs(acc.x - lastX);
-    if (deltaX > 45) triggerSurprise();
-    lastX = acc.x;
-}
-
-function triggerSurprise() {
-    const videoOverlay = document.getElementById('videoOverlay');
-    const video = document.getElementById('surpriseVideo');
-    isSurpriseActive = true;
-    videoOverlay.style.display = 'flex';
-    if (player) player.setVolume(10);
-    video.play();
-    video.onended = () => {
-        videoOverlay.style.display = 'none';
-        isSurpriseActive = false;
-        if (player) player.setVolume(100);
-    };
-}
-
-// --- LOGIKA TIME CAPSULE ---
-const unlockDate = new Date("2027-01-04T00:00:00"); // GANTI KE TANGGAL SURAT BISA DIBUKA (Misal: Ultah Dita)
-
-function openTimeCapsule() {
-    const modal = document.getElementById('capsuleModal');
-    const secret = document.getElementById('secretMessage');
-    const countdown = document.getElementById('countdownText');
-    const now = new Date();
-
-    modal.style.display = 'flex';
-
-    if (now >= unlockDate) {
-        // Jika sudah waktunya buka
-        document.getElementById('lockStatus').innerText = "🔓";
-        countdown.style.display = 'none';
-        secret.style.display = 'block';
-    } else {
-        // Jika belum waktunya
-        document.getElementById('lockStatus').innerText = "🔒";
-        secret.style.display = 'none';
-        
-        // Hitung selisih hari
-        const diff = unlockDate - now;
-        const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-        countdown.innerHTML = `Sabar ya Lutfi & Ditut... <br><br> Pesan ini masih terkunci. <br> <strong>Bisa dibuka dalam ${days} hari lagi!</strong>`;
-    }
-}
-
-function closeCapsule() {
-    document.getElementById('capsuleModal').style.display = 'none';
 }
