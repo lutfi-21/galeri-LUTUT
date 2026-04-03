@@ -44,6 +44,14 @@ function checkPass() {
 
 // --- 3. FIREBASE & RENDER ---
 window.onload = function() {
+    // Tambahkan di baris paling atas di dalam window.onload = function() { ...
+const loader = document.getElementById('loader');
+if(loader) {
+    setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 800);
+    }, 1500); // Tampil selama 1.5 detik
+}
     const photoRef = database.ref('photos');
     photoRef.on('child_added', (snapshot) => {
         const data = snapshot.val();
