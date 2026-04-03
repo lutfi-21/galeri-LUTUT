@@ -44,36 +44,45 @@ function checkPass() {
 
 // --- 3. FIREBASE & RENDER ---
 window.onload = function() {
-    // --- PREMIUM LOADER LOGIC ---
+    // --- 1. LOGIKA LOADER PREMIUM (Pasti Hilang) ---
     const loader = document.getElementById('loader');
-    if(loader) {
-        // Beri jeda 3 detik (3000ms) agar animasinya tuntas dinikmati
+    if (loader) {
         setTimeout(() => {
-            // Tambahkan class untuk fade-out (sesuai CSS baru)
-            loader.classList.add('fade-out');
-            
-            // Hapus elemen dari DOM setelah transisi CSS selesai (1 detik)
+            loader.style.opacity = '0';
+            loader.style.visibility = 'hidden';
+            // Hapus elemen dari layar setelah transisi selesai
             setTimeout(() => {
-                if(loader.parentNode) loader.parentNode.removeChild(loader);
+                loader.remove();
             }, 1000); 
-        }, 3000); 
+        }, 3000); // Tampil selama 3 detik
     }
-    
-    // ... sisa kode window.onload kamu yang lain (Firebase, Love Counter, dll.) ...
-};
+
+    // --- 2. LOGIKA FIREBASE (PENTING!) ---
     const photoRef = database.ref('photos');
+    
+    // Ambil foto yang sudah ada & dengerin foto baru
     photoRef.on('child_added', (snapshot) => {
         const data = snapshot.val();
-        renderPhoto(data.image, snapshot.key, data.caption);
+        // Pastikan fungsi renderPhoto kamu sudah mendukung parameter caption & type
+        renderPhoto(data.image, snapshot.key, data.caption, data.type);
     });
+
+    // Dengerin kalau ada foto yang dihapus
     photoRef.on('child_removed', (snapshot) => {
         const el = document.getElementById(snapshot.key);
         if (el) el.remove();
     });
 
-    document.getElementById("passInput").addEventListener("keyup", (e) => {
-        if (e.key === "Enter") checkPass();
-    });
+    // --- 3. INPUT SANDI (ENTER LISTENER) ---
+    const pInput = document.getElementById("passInput");
+    if (pInput) {
+        pInput.addEventListener("keyup", function(e) {
+            if (e.key === "Enter") checkPass();
+        });
+    }
+
+    // --- 4. TEMA OTOMATIS (OPSIONAL) ---
+    applyTimeTheme();
 };
 
 function renderPhoto(imageSrc, key, caption = "") {
