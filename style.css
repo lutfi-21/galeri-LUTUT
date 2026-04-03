@@ -67,15 +67,36 @@ header { text-align: center; padding: 40px 20px; z-index: 2; }
     margin: 0 auto;
 }
 
+/* --- GABUNGAN ANIMASI PROFESIONAL --- */
 .photo-card {
-    position: relative;
-    background: #ffffff; /* Putih Polaroid */
-    padding: 10px 10px 35px 10px;
-    border-radius: 2px;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-    transition: 0.4s;
-    transform: rotate(calc(var(--r, 0) * 1deg));
+    /* 1. Efek Muncul Pertama Kali (Fade In dari Bawah) */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease forwards, float 6s ease-in-out infinite 1.2s; 
+    /* Penjelasan: fadeInUp jalan dulu, baru float jalan setelah delay 1.2 detik */
 }
+
+/* Animasi Muncul dari Bawah */
+@keyframes fadeInUp {
+    to { 
+        opacity: 1; 
+        transform: translateY(0) rotate(calc(var(--r) * 1deg)); 
+    }
+}
+
+/* Animasi Melayang (Floating) - Tetap Kita Pakai */
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(calc(var(--r) * 1deg)); }
+    50% { transform: translateY(-10px) rotate(calc(var(--r) * 0.5deg)); }
+}
+
+/* Kasih jeda muncul antar foto (Stagger Effect) biar keren satu-satu munculnya */
+.photo-card:nth-child(1) { animation-delay: 0.1s, 1.3s; }
+.photo-card:nth-child(2) { animation-delay: 0.3s, 1.5s; }
+.photo-card:nth-child(3) { animation-delay: 0.5s, 1.7s; }
+.photo-card:nth-child(4) { animation-delay: 0.7s, 1.9s; }
+/* Dan seterusnya... */
+
 .photo-card:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 5; }
 .photo-card img { width: 100%; height: 160px; object-fit: cover; border: 1px solid #f0f0f0; }
 .photo-caption { font-family: 'Dancing Script', cursive; color: #333; font-size: 1.1rem; text-align: center; margin-top: 10px; word-wrap: break-word; }
