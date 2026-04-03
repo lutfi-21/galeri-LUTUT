@@ -3,53 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Eternal Memories</title>
+    <title>Our Eternal Memories | LUTUT</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-   <div id="loader">
-    <h1 class="loader-logo">LUTUT</h1>
-    <p class="loader-sub">A LUTFI & DITA PRODUCTION</p>
-</div>
+    <div id="loader">
+        <h1 class="loader-logo">LUTUT</h1>
+        <p class="loader-sub">A LUTFI & DITA PRODUCTION</p>
+    </div>
+
+    <div id="loginOverlay">
+        <h2 style="margin-bottom:20px; letter-spacing: 3px; font-weight: 300;">EXCLUSIVE ACCESS</h2>
+        <input type="password" id="passInput" placeholder="Masukkan Sandi...">
+        <button onclick="checkPass()" class="btn-login">Buka Galeri</button>
+        <p id="errorMsg" style="color:#ff4d6d; margin-top:15px; font-size:13px; display:none;">Sandi Salah, Lutfi!</p>
+    </div>
 
     <div class="forest-background">
         <div class="tree tree-left">
             <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
                 <path d="M50,200 L50,140" stroke="#0a0a1a" stroke-width="4" fill="none" />
-                <g class="leaves">
-                    <ellipse cx="50" cy="100" rx="35" ry="60" fill="#161625" opacity="0.8"/>
-                    <ellipse cx="35" cy="120" rx="25" ry="45" fill="#1c1c2e" opacity="0.6"/>
-                    <ellipse cx="65" cy="120" rx="25" ry="45" fill="#161625" opacity="0.7"/>
-                </g>
+                <ellipse cx="50" cy="100" rx="35" ry="60" fill="#161625" opacity="0.8"/>
             </svg>
         </div>
         <div class="tree tree-right">
             <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
                 <path d="M50,200 L50,150" stroke="#0a0a1a" stroke-width="3" fill="none" />
-                <g class="leaves">
-                    <ellipse cx="50" cy="110" rx="30" ry="50" fill="#161625" opacity="0.8"/>
-                    <ellipse cx="40" cy="130" rx="20" ry="35" fill="#1c1c2e" opacity="0.6"/>
-                </g>
+                <ellipse cx="50" cy="110" rx="30" ry="50" fill="#161625" opacity="0.8"/>
             </svg>
         </div>
     </div>
     
-    <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; font-family: sans-serif;">
-        <h2 style="margin-bottom:20px; letter-spacing: 2px;">EXCLUSIVE ACCESS</h2>
-        <input type="password" id="passInput" placeholder="Masukkan Sandi..." style="padding:12px; border-radius:8px; border:none; text-align:center; outline:none; width:200px;">
-        <button onclick="checkPass()" style="margin-top:15px; padding:10px 25px; border-radius:20px; border:1px solid #fff; background:transparent; color:#fff; cursor:pointer;">Buka Galeri</button>
-        <p id="errorMsg" style="color:red; margin-top:10px; font-size:12px; display:none;">Sandi Salah, Lutfi!</p>
-    </div>
-    
     <div id="player" style="display:none;"></div>
-    <div class="background-overlay"></div>
 
     <header>
         <h1 class="title">This is LUTUT</h1>
         <p class="subtitle">Lutfi Dan Ditut Anjayyy.</p>
-        
-        <div id="loveCounter"></div>
+        <div id="loveCounter">Memuat hari bahagia...</div>
         
         <div class="button-group">
             <button id="musicBtn" onclick="togglePlay()" class="btn-estetik">🎵 Play Music</button>
@@ -59,44 +50,40 @@
 
     <main>
         <div class="time-capsule-container">
-    <div id="capsuleIcon" onclick="openTimeCapsule()">
-        <div class="envelope">
-            <span id="lockStatus">🔒</span>
-            <p>Surat Masa Depan</p>
-        </div>
-    </div>
-</div>
-
-<div id="capsuleModal" class="modal-overlay" onclick="closeCapsule()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-modal" onclick="closeCapsule()">&times;</span>
-        <h2 id="modalTitle">Pesan Masa Depan</h2>
-        <hr>
-        <div id="modalBody">
-            <p id="countdownText"></p>
-            <div id="secretMessage" style="display:none;">
-                Halo Ditut... <br><br>
-                Kalau kamu baca ini, berarti waktu kita bersama sudah satu tahun. 
-                Aku cuma mau bilang, semoga aja pas kamu atau aku baca ini kita masih sama sama ya, amin paling seriuss, anjayy
+            <div id="capsuleIcon" onclick="openTimeCapsule()">
+                <div class="envelope">
+                    <span id="lockStatus">🔒</span>
+                    <p>Surat Masa Depan</p>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+
         <div class="upload-section">
             <input type="text" id="photoCaption" placeholder="Tulis caption momen ini..." maxlength="40">
             <br>
-            <label for="file-upload" class="custom-file-upload">
-                + Tambah Foto & Caption
-            </label>
+            <label for="file-upload" class="custom-file-upload">+ Tambah Foto</label>
             <input id="file-upload" type="file" accept="image/*" onchange="handleUpload(event)"/>
         </div>
 
         <div class="gallery-container" id="gallery">
-            <div class="photo-card placeholder">
-                <p>belum tek foto, upload lah foto nyo.</p>
+            </div>
+    </main>
+
+    <div id="capsuleModal" class="modal-overlay" onclick="closeCapsule()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="closeCapsule()">&times;</span>
+            <h2 id="modalTitle">Pesan Masa Depan</h2>
+            <hr>
+            <div id="modalBody">
+                <p id="countdownText"></p>
+                <div id="secretMessage" style="display:none;">
+                    Halo Ditut... <br><br>
+                    Kalau kamu baca ini, berarti waktu kita bersama sudah satu tahun. <br>
+                    Semoga kita masih sama-sama ya, amin paling serius!
+                </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <div id="videoOverlay" class="video-overlay">
         <video id="surpriseVideo">
@@ -109,9 +96,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="script.js"></script>
-<footer style="text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.5); font-size: 0.8rem; letter-spacing: 2px;">
-    <p>MADE WITH ❤️ BY LUTFI</p>
-    <p style="margin-top: 5px;">&copy; 2026 LUTUT PROJECT • FOREVER & ALWAYS</p>
-</footer>
+
+    <footer>
+        <p>MADE WITH ❤️ BY LUTFI</p>
+        <p style="margin-top: 5px;">&copy; 2026 LUTUT PROJECT • FOREVER & ALWAYS</p>
+    </footer>
 </body>
 </html>
