@@ -1,12 +1,10 @@
 :root {
     --primary-love: #ff4d6d;
-    --glass-bg: rgba(0, 0, 0, 0.3);
-    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-bg: rgba(0, 0, 0, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.15);
     --text-color: #ffffff;
-    --sub-text: #e0e0e0;
 }
 
-/* --- RESET & BASE --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -17,7 +15,6 @@ body {
     color: var(--text-color);
     min-height: 100vh;
     overflow-x: hidden;
-    scroll-behavior: smooth;
 }
 
 @keyframes gradientBG {
@@ -26,161 +23,82 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* --- CUSTOM SCROLLBAR (PRO) --- */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0f0c29; }
-::-webkit-scrollbar-thumb { background: var(--primary-love); border-radius: 10px; }
-
-/* --- HEADER & TITLES --- */
-header { text-align: center; padding: 40px 20px; z-index: 2; position: relative; }
-.title { 
-    font-family: 'Dancing Script', cursive; 
-    font-size: 4rem; 
-    color: var(--primary-love); 
-    text-shadow: 0 0 15px rgba(255, 77, 109, 0.4); 
-}
-
-#loveCounter {
-    margin-top: 15px;
-    font-size: 1rem;
-    color: var(--primary-love);
-    font-weight: 600;
-}
-#loveCounter span {
-    background: rgba(255, 77, 109, 0.2);
-    padding: 2px 6px;
-    border-radius: 5px;
-    margin: 0 2px;
-}
-
-/* --- PHOTO GALLERY GRID --- */
-.gallery-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 30px;
-    padding: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    perspective: 1000px;
-}
-
-/* --- THE NEW PROFESSIONAL POLAROID CARD --- */
-.photo-card {
-    background: #ffffff; /* BINGKAI PUTIH WAJIB */
-    padding: 12px 12px 40px 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    position: relative;
-    border-radius: 2px;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
-    cursor: pointer;
-    
-    /* LOGIKA ANIMASI GABUNGAN */
-    opacity: 0;
-    transform: translateY(40px);
-    animation: fadeInUp 1.2s ease forwards, float 6s ease-in-out infinite 1.5s;
-}
-
-.photo-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border: 1px solid #f0f0f0;
-    display: block;
-}
-
-.photo-caption {
-    font-family: 'Dancing Script', cursive;
-    color: #333333; /* Warna gelap agar terbaca di bingkai putih */
-    font-size: 1.2rem;
-    text-align: center;
-    margin-top: 12px;
-    word-wrap: break-word;
-    font-weight: bold;
-}
-
-.photo-card:hover {
-    transform: scale(1.1) rotate(0deg) !important;
-    z-index: 100;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-}
-
-/* --- ANIMASI SAKTI --- */
-@keyframes fadeInUp {
-    to { 
-        opacity: 1; 
-        transform: translateY(0) rotate(calc(var(--r) * 1deg)); 
-    }
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(calc(var(--r) * 1deg)); }
-    50% { transform: translateY(-12px) rotate(calc(var(--r) * 0.5deg)); }
-}
-
-/* --- STAGGER EFFECT (MUNCUL BERGANTIAN) --- */
-.photo-card:nth-child(1) { animation-delay: 0.1s, 1.6s; }
-.photo-card:nth-child(2) { animation-delay: 0.3s, 1.8s; }
-.photo-card:nth-child(3) { animation-delay: 0.5s, 2.0s; }
-.photo-card:nth-child(4) { animation-delay: 0.7s, 2.2s; }
-
-/* --- FITUR LAINNYA --- */
-.btn-estetik { padding: 10px 20px; border-radius: 30px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: white; cursor: pointer; transition: 0.3s; }
-.btn-estetik:hover { background: var(--primary-love); transform: translateY(-3px); }
-
-.upload-section { text-align: center; margin-bottom: 30px; }
-#photoCaption { padding: 10px; border-radius: 15px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: white; outline: none; width: 220px; margin-bottom: 10px; text-align: center; }
-
-.delete-btn {
-    position: absolute; top: 5px; right: 5px;
-    background: rgba(255, 77, 109, 0.9); color: white;
-    border: none; border-radius: 50%; width: 28px; height: 28px;
-    cursor: pointer; display: flex; justify-content: center; align-items: center;
-    opacity: 0; transition: 0.3s; z-index: 10;
-}
-.photo-card:hover .delete-btn { opacity: 1; }
-
-/* --- PREMIUM PRELOADER --- */
+/* --- LOADER --- */
 #loader {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #000000; z-index: 20000;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    transition: opacity 1s ease-in-out, visibility 1s; overflow: hidden;
+    background: #000; z-index: 100000; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; transition: 0.8s;
 }
-#loader::before {
-    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-    background-size: 100% 4px; z-index: 20001; opacity: 0.15; animation: flicker 0.15s infinite;
+.loader-logo { font-family: 'Dancing Script', cursive; font-size: 4rem; text-shadow: 0 0 20px var(--primary-love); }
+.loader-sub { font-size: 0.7rem; letter-spacing: 4px; color: rgba(255,255,255,0.5); margin-top: 10px; }
+
+/* --- LOGIN --- */
+#loginOverlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; z-index: 99999; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; transition: 0.6s;
 }
-.loader-logo {
-    font-family: 'Dancing Script', cursive; color: #ffffff; font-size: 4rem;
-    letter-spacing: 5px; text-align: center; z-index: 20002;
-    text-shadow: 0 0 10px #ffffff, 0 0 20px var(--primary-love);
-    animation: premiumEntrance 2s ease-out forwards;
+#loginOverlay input {
+    padding: 12px; border-radius: 8px; border: none; width: 220px;
+    text-align: center; font-family: 'Poppins'; margin-bottom: 15px;
+}
+.btn-login {
+    padding: 10px 30px; border-radius: 25px; border: 1px solid #fff;
+    background: transparent; color: #fff; cursor: pointer; transition: 0.3s;
+}
+.btn-login:hover { background: #fff; color: #000; }
+
+/* --- HEADER & ELEMENTS --- */
+header { text-align: center; padding: 50px 20px; }
+.title { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--primary-love); }
+#loveCounter { margin-top: 15px; font-weight: 600; color: var(--primary-love); }
+#loveCounter span { background: rgba(255, 77, 109, 0.2); padding: 2px 5px; border-radius: 4px; }
+
+.btn-estetik {
+    padding: 10px 20px; border-radius: 30px; border: 1px solid var(--glass-border);
+    background: var(--glass-bg); color: white; cursor: pointer; margin: 5px; transition: 0.3s;
+}
+.btn-estetik:hover { background: var(--primary-love); transform: translateY(-3px); }
+
+/* --- GALLERY --- */
+.gallery-container {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px; padding: 30px; max-width: 1200px; margin: 0 auto;
+}
+.photo-card {
+    background: #fff; padding: 10px 10px 40px 10px; border-radius: 2px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5); position: relative;
+    transform: rotate(calc(var(--r, 0) * 1deg));
+    opacity: 0; animation: fadeInUp 0.8s ease forwards;
+}
+.photo-card img { width: 100%; height: 180px; object-fit: cover; }
+.photo-caption {
+    font-family: 'Dancing Script', cursive; color: #333;
+    text-align: center; margin-top: 10px; font-weight: bold; font-size: 1.1rem;
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px) rotate(0deg); }
+    to { opacity: 1; transform: translateY(0) rotate(calc(var(--r, 0) * 1deg)); }
 }
 
-@keyframes premiumEntrance {
-    0% { opacity: 0; transform: scale(0.9); filter: blur(5px); }
-    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+/* --- OTHERS --- */
+.upload-section { text-align: center; margin: 30px 0; }
+#photoCaption { padding: 10px; border-radius: 10px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: #fff; width: 250px; text-align: center; }
+.custom-file-upload { display: inline-block; padding: 10px 20px; background: #fff; color: var(--primary-love); border-radius: 20px; cursor: pointer; font-weight: 600; margin-top: 10px; }
+
+.delete-btn {
+    position: absolute; top: 5px; right: 5px; background: var(--primary-love);
+    color: #fff; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer;
 }
 
-@keyframes flicker {
-    0%, 100% { opacity: 0.15; } 50% { opacity: 0.1; }
-}
+.envelope { background: var(--glass-bg); padding: 20px; border-radius: 15px; cursor: pointer; display: inline-block; border: 1px solid var(--glass-border); transition: 0.3s; }
+.envelope:hover { transform: scale(1.05); background: rgba(255,255,255,0.1); }
 
-/* --- TIME CAPSULE STYLING --- */
-.envelope {
-    display: inline-block; background: var(--glass-bg);
-    border: 1px solid var(--glass-border); backdrop-filter: blur(10px);
-    padding: 20px 40px; border-radius: 15px; cursor: pointer; transition: 0.3s;
-}
-.envelope:hover { transform: translateY(-5px); background: rgba(255, 77, 109, 0.1); }
-.modal-content { background: white; color: #333; padding: 30px; border-radius: 10px; max-width: 400px; width: 90%; text-align: center; position: relative; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 10000; }
+.modal-content { background: #fff; color: #333; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
 
-/* --- RESPONSIVE --- */
 @media (max-width: 600px) {
-    .title { font-size: 2.8rem; }
-    .gallery-container { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); padding: 15px; gap: 15px; }
-    .photo-card { padding: 8px 8px 30px 8px; }
-    .photo-card img { height: 140px; }
-    .loader-logo { font-size: 2.5rem; }
+    .title { font-size: 2.5rem; }
+    .gallery-container { grid-template-columns: 1fr 1fr; padding: 15px; gap: 15px; }
+    .photo-card { padding-bottom: 30px; }
 }
