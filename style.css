@@ -256,3 +256,13 @@ header { text-align: center; padding: 40px 20px; z-index: 2; }
 @media (max-width: 600px) {
     .loader-logo { font-size: 2.5rem; letter-spacing: 3px; }
 }
+
+/* Animasi muncul dari bawah */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.photo-card {
+    animation: fadeInUp 1s ease backwards;
+}
