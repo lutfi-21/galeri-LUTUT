@@ -8,8 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <div id="loader"> ... </div>
     <div id="loader">
         <h1 class="loader-logo">LUTUT</h1>
         <p class="loader-sub">A LUTFI & DITA PRODUCTION</p>
@@ -22,9 +20,18 @@
         <p id="errorMsg">Sandi Salah, Lutfi!</p>
     </div>
 
+    <div class="forest-background">
+        <div class="tree tree-left">
+            <svg viewBox="0 0 100 200"><path d="M50,200 L50,140" stroke="#050510" stroke-width="4" fill="none" /><ellipse cx="50" cy="100" rx="35" ry="60" fill="#0a0a1a" /></svg>
+        </div>
+        <div class="tree tree-right">
+            <svg viewBox="0 0 100 200"><path d="M50,200 L50,150" stroke="#050510" stroke-width="3" fill="none" /><ellipse cx="50" cy="110" rx="30" ry="50" fill="#0a0a1a" /></svg>
+        </div>
+    </div>
+
     <div id="videoOverlay" class="video-overlay">
         <div class="video-box">
-            <video id="surpriseVideo">
+            <video id="surpriseVideo" playsinline>
                 <source src="pesan-video.mp4" type="video/mp4">
             </video>
             <button class="btn-close-video" onclick="closeVideo()">Lanjut Ke Galeri &rarr;</button>
@@ -33,12 +40,10 @@
 
     <div id="player" style="display:none;"></div>
 
-    <div id="mainContent">
+    <div id="mainContent" style="display:none; opacity: 0;">
         <header>
             <h1 class="title">This is LUTUT</h1>
-            <p class="subtitle">Lutfi Dan Ditut Anjayyy.</p>
-            <div id="loveCounter">Memuat hari bahagia...</div>
-            
+            <p id="loveCounter">Memuat hari bahagia...</p>
             <div class="button-group">
                 <button id="musicBtn" onclick="togglePlay()" class="btn-estetik">🎵 Play Music</button>
                 <button id="captureBtn" onclick="takeScreenshot()" class="btn-estetik">📸 Capture</button>
@@ -61,25 +66,14 @@
 
             <div class="gallery-container" id="gallery"></div>
         </main>
-
-        <footer>
-            <p>MADE WITH ❤️ BY LUTFI</p>
-            <p>&copy; 2026 LUTUT PROJECT</p>
-        </footer>
     </div>
 
     <div id="capsuleModal" class="modal-overlay" onclick="closeCapsule()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-x" onclick="closeCapsule()">&times;</span>
-            <h2 id="modalTitle">Pesan Masa Depan</h2>
+            <h2>Pesan Masa Depan</h2>
             <hr>
-            <div id="modalBody">
-                <p id="countdownText"></p>
-                <div id="secretMessage" style="display:none;">
-                    Halo Ditut... <br><br>
-                    Semoga kita masih sama-sama ya di masa depan, amin!
-                </div>
-            </div>
+            <div id="modalBody"><p id="countdownText"></p></div>
         </div>
     </div>
 
