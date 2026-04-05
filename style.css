@@ -1,106 +1,44 @@
-:root { --primary: #ff4d6d; --glass: rgba(0,0,0,0.5); }
+:root { --primary: #ff4d6d; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Poppins', sans-serif; background: #0f0c29; color: white; overflow-x: hidden; }
 
-/* 1. LOADER & LOGIN (FULL CENTER) */
-#loader, #loginOverlay {
-    position: fixed; inset: 0; background: #000; z-index: 10000;
-    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-}
-#loginOverlay { z-index: 9000; background: rgba(0,0,0,0.95); transition: 0.8s; }
-.loader-logo { font-family: 'Dancing Script', cursive; font-size: 4rem; text-shadow: 0 0 20px var(--primary); animation: pulse 2s infinite; }
-@keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+/* LAYERING */
+#loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+#loginOverlay { position: fixed; inset: 0; background: #000; z-index: 9000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
-#loginOverlay input { padding: 15px; border-radius: 10px; border: none; width: 280px; margin-bottom: 20px; text-align: center; font-size: 16px; }
-.btn-login { padding: 12px 40px; border-radius: 30px; background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
-#errorMsg { color: var(--primary); margin-top: 15px; display: none; }
+/* POHON (DIPAKSA MUNCUL) */
+.forest-background { position: fixed; bottom: 0; width: 100%; height: 250px; z-index: 2; pointer-events: none; }
+.tree { position: absolute; bottom: -10px; width: 130px; opacity: 0.6; transform-origin: bottom center; animation: treeSway 6s ease-in-out infinite; }
+.tree-left { left: -20px; }
+.tree-right { right: -20px; transform: scaleX(-1); animation-delay: 1.5s; }
+@keyframes treeSway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
 
-/* 2. BACKGROUND FOREST */
-
-/* 3. VIDEO SHAKE OVERLAY */
-.video-overlay {
-    position: fixed; inset: 0; background: #000; z-index: 11000;
-    display: none; justify-content: center; align-items: center;
-}
+/* VIDEO */
+.video-overlay { position: fixed; inset: 0; background: #000; z-index: 11000; display: none; justify-content: center; align-items: center; }
 .video-box { width: 90%; max-width: 500px; text-align: center; }
-#surpriseVideo { width: 100%; border-radius: 15px; box-shadow: 0 0 30px var(--primary); }
-.btn-close-video { margin-top: 20px; padding: 10px 25px; border: 1px solid white; background: none; color: white; border-radius: 20px; cursor: pointer; }
+#surpriseVideo { width: 100%; border-radius: 15px; box-shadow: 0 0 20px var(--primary); }
 
-/* 4. MAIN CONTENT */
-#mainContent { opacity: 0; display: none; position: relative; z-index: 5; transition: 1s; }
-header { text-align: center; padding: 60px 20px; }
+/* CONTENT & POLAROID */
+#mainContent { position: relative; z-index: 5; transition: 1s; }
+header { text-align: center; padding: 50px 20px; }
 .title { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--primary); }
-#loveCounter { margin: 15px 0; color: var(--primary); font-weight: 600; letter-spacing: 1px; }
-#loveCounter span { background: rgba(255,77,109,0.2); padding: 2px 6px; border-radius: 4px; }
+.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; padding: 20px; }
+.photo-card { background: white; padding: 10px 10px 35px 10px; transform: rotate(calc(var(--r, 0) * 1deg)); transition: 0.3s; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+.photo-card img { width: 100%; height: 160px; object-fit: cover; }
+.photo-card:hover { transform: scale(1.08) rotate(0deg) !important; z-index: 50; }
 
-/* 5. GALLERY POLAROID */
-.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 25px; padding: 25px; }
-.photo-card {
-    background: white; padding: 12px 12px 40px 12px; border-radius: 2px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5); position: relative;
-    transform: rotate(calc(var(--r, 0) * 1deg)); transition: 0.4s;
-}
-.photo-card:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 50; box-shadow: 0 15px 40px rgba(0,0,0,0.7); }
-.photo-card img { width: 100%; height: 180px; object-fit: cover; }
-.photo-caption { font-family: 'Dancing Script', cursive; color: #333; text-align: center; margin-top: 10px; font-weight: bold; font-size: 1.1rem; }
+/* ANIMASI MERAH SAAT KLIK */
+.btn-estetik { padding: 10px 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: white; cursor: pointer; transition: 0.2s; }
+.btn-estetik:active { transform: scale(0.9); box-shadow: 0 0 15px var(--primary); background: var(--primary); }
 
-/* TOMBOL X (HANYA MUNCUL SAAT HOVER/SENTUH) */
-.delete-btn {
-    position: absolute; top: 5px; right: 5px; background: var(--primary); color: white;
-    border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer;
-    opacity: 0; transition: 0.3s;
-}
+/* DELETE BTN */
+.delete-btn { position: absolute; top: 5px; right: 5px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; opacity: 0; transition: 0.2s; }
 .photo-card:hover .delete-btn { opacity: 1; }
 
-/* 6. BUTTONS & UPLOAD */
-.button-group { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
-.btn-estetik { padding: 10px 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); background: var(--glass); color: white; cursor: pointer; transition: 0.3s; }
-.upload-area { text-align: center; margin: 30px 0; }
-#photoCaption { padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: var(--glass); color: white; width: 240px; margin-bottom: 10px; }
-.btn-upload { background: white; color: var(--primary); padding: 8px 25px; border-radius: 20px; font-weight: 600; cursor: pointer; display: inline-block; }
-
-/* 7. TIME CAPSULE */
-.capsule-section { display: flex; justify-content: center; padding: 20px; }
-.envelope { background: var(--glass); padding: 20px 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; text-align: center; }
-.envelope:hover { transform: translateY(-5px); background: rgba(255,77,109,0.1); }
-.envelope p { font-family: 'Dancing Script', cursive; font-size: 1.5rem; margin-top: 5px; }
-
-/* MODAL */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 12000; }
-.modal-content { background: white; color: #333; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; position: relative; }
-.close-x { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: #999; }
-
-@media (max-width: 600px) { .gallery-container { grid-template-columns: 1fr 1fr; gap: 15px; } .photo-card img { height: 140px; } }
-footer { text-align: center; padding: 40px; font-size: 0.8rem; opacity: 0.5; }
-
-/* --- ANIMASI POHON BERAYUN (SWAY) --- */
-.forest-background { 
-    position: fixed; bottom: 0; width: 100%; height: 200px; 
-    z-index: 1; pointer-events: none; display: flex; justify-content: space-between;
-}
-.tree { 
-    position: absolute; bottom: -10px; width: 120px; opacity: 0.6; 
-    transform-origin: bottom center;
-    animation: treeSway 5s ease-in-out infinite; /* Efek berayun pelan */
-}
-.tree-left { left: -20px; }
-.tree-right { right: -20px; transform: scaleX(-1); animation-delay: 1s; }
-
-@keyframes treeSway {
-    0%, 100% { transform: rotate(-2deg); }
-    50% { transform: rotate(2deg); }
-}
-
-/* --- ANIMASI MERAH PADA TOMBOL (GLOW EFFECT) --- */
-.btn-estetik:active {
-    transform: scale(0.95);
-    background: #ff4d6d;
-    box-shadow: 0 0 15px #ff4d6d, 0 0 30px #ff4d6d; /* Efek merah-merah pas dipencet */
-    transition: 0.1s;
-}
-
-/* Tambahkan ini juga biar pas di-hover (sentuh) ada aura merah tipis */
-.btn-estetik:hover {
-    border-color: #ff4d6d;
-    box-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
-}
+/* LAINNYA */
+.loader-logo { font-family: 'Dancing Script', cursive; font-size: 4rem; text-shadow: 0 0 15px var(--primary); }
+#loginOverlay input { padding: 12px; border-radius: 8px; border: none; width: 260px; margin-bottom: 15px; text-align: center; }
+.btn-login { padding: 10px 30px; border-radius: 20px; background: var(--primary); color: white; border: none; cursor: pointer; }
+.envelope { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; text-align: center; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 12000; }
+.modal-content { background: white; color: #333; padding: 25px; border-radius: 12px; width: 85%; max-width: 350px; text-align: center; position: relative; }
