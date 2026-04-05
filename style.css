@@ -1,129 +1,78 @@
-:root { 
-    --primary: #ff4d6d; 
-    --glass: rgba(0,0,0,0.4); 
-}
-
+:root { --primary: #ff4d6d; --glass: rgba(0,0,0,0.5); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Poppins', sans-serif; background: #0f0c29; color: white; overflow-x: hidden; }
 
-body { 
-    font-family: 'Poppins', sans-serif; 
-    /* Latar belakang gradasi malam yang estetik */
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); 
-    color: white; 
-    overflow-x: hidden; 
-    min-height: 100vh;
+/* 1. LOADER & LOGIN (FULL CENTER) */
+#loader, #loginOverlay {
+    position: fixed; inset: 0; background: #000; z-index: 10000;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
 }
-
-/* =========================================
-   1. OVERLAYS (LOADER, LOGIN, VIDEO, MODAL)
-   ========================================= */
-#loader, #loginOverlay, .video-overlay, .modal-overlay {
-    position: fixed; inset: 0; 
-    display: flex; flex-direction: column; justify-content: center; align-items: center; 
-    text-align: center;
-}
-
-#loader { z-index: 10000; background: #000; }
 #loginOverlay { z-index: 9000; background: rgba(0,0,0,0.95); transition: 0.8s; }
-.video-overlay { z-index: 11000; background: rgba(0,0,0,0.95); display: none; }
-.modal-overlay { z-index: 12000; background: rgba(0,0,0,0.85); display: none; }
+.loader-logo { font-family: 'Dancing Script', cursive; font-size: 4rem; text-shadow: 0 0 20px var(--primary); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
-/* Loader Animation */
-.loader-logo { font-family: 'Dancing Script', cursive; font-size: 4.5rem; text-shadow: 0 0 20px var(--primary); animation: pulse 2s infinite; }
-.loader-sub { letter-spacing: 3px; margin-top: 10px; font-size: 0.9rem; opacity: 0.8; font-weight: 300; }
-@keyframes pulse { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+#loginOverlay input { padding: 15px; border-radius: 10px; border: none; width: 280px; margin-bottom: 20px; text-align: center; font-size: 16px; }
+.btn-login { padding: 12px 40px; border-radius: 30px; background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; }
+#errorMsg { color: var(--primary); margin-top: 15px; display: none; }
 
-/* Login Box */
-#loginOverlay h2 { letter-spacing: 4px; font-weight: 300; margin-bottom: 30px; font-size: 1.5rem; }
-#loginOverlay input { padding: 15px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: white; width: 280px; margin-bottom: 20px; text-align: center; font-size: 16px; outline: none; transition: 0.3s; }
-#loginOverlay input:focus { border-color: var(--primary); background: rgba(255,255,255,0.2); }
-.btn-login { padding: 12px 40px; border-radius: 30px; background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(255,77,109,0.4); }
-.btn-login:active { transform: scale(0.95); }
-#errorMsg { color: var(--primary); margin-top: 15px; display: none; font-weight: bold; }
-
-/* Video Box */
-.video-box { width: 90%; max-width: 400px; }
-#surpriseVideo { width: 100%; border-radius: 15px; border: 2px solid var(--primary); box-shadow: 0 0 30px rgba(255,77,109,0.6); }
-.btn-close-video { margin-top: 25px; padding: 12px 30px; border: 1px solid white; background: transparent; color: white; border-radius: 30px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-.btn-close-video:hover { background: white; color: black; }
-
-/* Modal Box */
-.modal-content { background: white; color: #333; padding: 35px 20px; border-radius: 15px; width: 90%; max-width: 380px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.close-x { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #888; transition: 0.2s; font-weight: bold; }
-.close-x:hover { color: var(--primary); }
-.modal-content h2 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.2rem; margin-bottom: 10px; }
-.modal-content hr { margin: 15px 0; border: none; border-top: 1px solid #eee; }
-
-/* =========================================
-   2. BACKGROUND POHON
-   ========================================= */
-.forest-background { position: fixed; bottom: 0; left: 0; width: 100%; height: 250px; z-index: 1; pointer-events: none; overflow: hidden; }
-.tree { position: absolute; bottom: -20px; width: 160px; opacity: 0.5; transform-origin: bottom center; animation: treeSway 6s ease-in-out infinite; }
+/* 2. BACKGROUND FOREST */
+.forest-background { position: fixed; bottom: 0; width: 100%; height: 250px; z-index: 1; pointer-events: none; }
+.tree { position: absolute; bottom: -10px; width: 150px; opacity: 0.5; }
 .tree-left { left: -30px; }
-.tree-right { right: -30px; transform: scaleX(-1); animation-delay: 1.5s; }
-@keyframes treeSway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+.tree-right { right: -30px; transform: scaleX(-1); }
 
-/* =========================================
-   3. MAIN CONTENT & HEADER
-   ========================================= */
-#mainContent { position: relative; z-index: 5; transition: opacity 1s ease-in-out; width: 100%; max-width: 1000px; margin: 0 auto; padding-bottom: 60px; }
-header { text-align: center; padding: 60px 20px 30px 20px; }
-.title { font-family: 'Dancing Script', cursive; font-size: 3.8rem; color: var(--primary); text-shadow: 0 2px 10px rgba(255,77,109,0.3); margin-bottom: 10px; }
-#loveCounter { margin: 15px 0 30px 0; color: white; font-weight: 600; letter-spacing: 1px; font-size: 1rem; }
-#loveCounter span { background: rgba(255,77,109,0.8); padding: 5px 10px; border-radius: 8px; margin: 0 3px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-
-/* Buttons Header (Animasi Merah) */
-.button-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-.btn-estetik { padding: 12px 25px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.3); background: var(--glass); color: white; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(5px); }
-.btn-estetik:hover { border-color: var(--primary); box-shadow: 0 0 15px rgba(255,77,109,0.4); }
-.btn-estetik:active { transform: scale(0.9); background: var(--primary); box-shadow: 0 0 20px var(--primary); }
-
-/* =========================================
-   4. UPLOAD & TIME CAPSULE
-   ========================================= */
-.capsule-section { display: flex; justify-content: center; padding: 20px; margin-bottom: 10px; }
-.envelope { background: var(--glass); padding: 20px 50px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s; text-align: center; backdrop-filter: blur(5px); }
-.envelope:hover { transform: translateY(-5px); background: rgba(255,77,109,0.15); border-color: var(--primary); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-.envelope p { font-family: 'Dancing Script', cursive; font-size: 1.8rem; margin-top: 10px; }
-
-.upload-area { text-align: center; margin: 20px 0 40px 0; }
-#photoCaption { padding: 12px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: var(--glass); color: white; width: 260px; margin-bottom: 15px; outline: none; }
-#photoCaption::placeholder { color: #bbb; }
-.btn-upload { background: white; color: var(--primary); padding: 10px 30px; border-radius: 30px; font-weight: bold; cursor: pointer; display: inline-block; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-.btn-upload:hover { box-shadow: 0 0 20px rgba(255,255,255,0.5); transform: translateY(-2px); }
-#file-upload { display: none; }
-
-/* =========================================
-   5. GALLERY POLAROID GRID
-   ========================================= */
-.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 30px; padding: 20px 40px; }
-.photo-card { 
-    background: white; padding: 12px 12px 50px 12px; border-radius: 4px; 
-    box-shadow: 0 10px 20px rgba(0,0,0,0.4); position: relative; 
-    transform: rotate(calc(var(--r, 0) * 1deg)); 
-    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+/* 3. VIDEO SHAKE OVERLAY */
+.video-overlay {
+    position: fixed; inset: 0; background: #000; z-index: 11000;
+    display: none; justify-content: center; align-items: center;
 }
-.photo-card:hover { transform: scale(1.12) rotate(0deg) !important; z-index: 50; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
-.photo-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 2px; border: 1px solid #eee; }
-.photo-caption { font-family: 'Dancing Script', cursive; color: #222; text-align: center; margin-top: 10px; font-weight: bold; font-size: 1.3rem; position: absolute; bottom: 12px; width: calc(100% - 24px); }
+.video-box { width: 90%; max-width: 500px; text-align: center; }
+#surpriseVideo { width: 100%; border-radius: 15px; box-shadow: 0 0 30px var(--primary); }
+.btn-close-video { margin-top: 20px; padding: 10px 25px; border: 1px solid white; background: none; color: white; border-radius: 20px; cursor: pointer; }
 
-/* Tombol X (Hapus) */
-.delete-btn { 
-    position: absolute; top: -12px; right: -12px; background: var(--primary); color: white; 
-    border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 18px; line-height: 32px; 
-    cursor: pointer; opacity: 0; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.4); 
+/* 4. MAIN CONTENT */
+#mainContent { opacity: 0; display: none; position: relative; z-index: 5; transition: 1s; }
+header { text-align: center; padding: 60px 20px; }
+.title { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--primary); }
+#loveCounter { margin: 15px 0; color: var(--primary); font-weight: 600; letter-spacing: 1px; }
+#loveCounter span { background: rgba(255,77,109,0.2); padding: 2px 6px; border-radius: 4px; }
+
+/* 5. GALLERY POLAROID */
+.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 25px; padding: 25px; }
+.photo-card {
+    background: white; padding: 12px 12px 40px 12px; border-radius: 2px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5); position: relative;
+    transform: rotate(calc(var(--r, 0) * 1deg)); transition: 0.4s;
+}
+.photo-card:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 50; box-shadow: 0 15px 40px rgba(0,0,0,0.7); }
+.photo-card img { width: 100%; height: 180px; object-fit: cover; }
+.photo-caption { font-family: 'Dancing Script', cursive; color: #333; text-align: center; margin-top: 10px; font-weight: bold; font-size: 1.1rem; }
+
+/* TOMBOL X (HANYA MUNCUL SAAT HOVER/SENTUH) */
+.delete-btn {
+    position: absolute; top: 5px; right: 5px; background: var(--primary); color: white;
+    border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer;
+    opacity: 0; transition: 0.3s;
 }
 .photo-card:hover .delete-btn { opacity: 1; }
-.delete-btn:hover { background: #e03e5c; transform: scale(1.1); }
 
-/* =========================================
-   6. RESPONSIVE MOBILE
-   ========================================= */
-@media (max-width: 600px) {
-    .gallery-container { grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
-    .photo-card img { height: 150px; }
-    .photo-card { padding: 10px 10px 40px 10px; }
-    header { padding-top: 40px; }
-    .title { font-size: 3rem; }
-    .btn-estetik { padding: 10px 20px; font-size: 0.9rem; }
-}
+/* 6. BUTTONS & UPLOAD */
+.button-group { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+.btn-estetik { padding: 10px 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); background: var(--glass); color: white; cursor: pointer; transition: 0.3s; }
+.upload-area { text-align: center; margin: 30px 0; }
+#photoCaption { padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: var(--glass); color: white; width: 240px; margin-bottom: 10px; }
+.btn-upload { background: white; color: var(--primary); padding: 8px 25px; border-radius: 20px; font-weight: 600; cursor: pointer; display: inline-block; }
+
+/* 7. TIME CAPSULE */
+.capsule-section { display: flex; justify-content: center; padding: 20px; }
+.envelope { background: var(--glass); padding: 20px 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; text-align: center; }
+.envelope:hover { transform: translateY(-5px); background: rgba(255,77,109,0.1); }
+.envelope p { font-family: 'Dancing Script', cursive; font-size: 1.5rem; margin-top: 5px; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 12000; }
+.modal-content { background: white; color: #333; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; position: relative; }
+.close-x { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: #999; }
+
+@media (max-width: 600px) { .gallery-container { grid-template-columns: 1fr 1fr; gap: 15px; } .photo-card img { height: 140px; } }
+footer { text-align: center; padding: 40px; font-size: 0.8rem; opacity: 0.5; }
