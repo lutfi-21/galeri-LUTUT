@@ -1,44 +1,129 @@
-:root { --primary: #ff4d6d; }
+:root { 
+    --primary: #ff4d6d; 
+    --glass: rgba(0,0,0,0.4); 
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Poppins', sans-serif; background: #0f0c29; color: white; overflow-x: hidden; }
 
-/* LAYERING */
-#loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-#loginOverlay { position: fixed; inset: 0; background: #000; z-index: 9000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+body { 
+    font-family: 'Poppins', sans-serif; 
+    /* Latar belakang gradasi malam yang estetik */
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); 
+    color: white; 
+    overflow-x: hidden; 
+    min-height: 100vh;
+}
 
-/* POHON (DIPAKSA MUNCUL) */
-.forest-background { position: fixed; bottom: 0; width: 100%; height: 250px; z-index: 2; pointer-events: none; }
-.tree { position: absolute; bottom: -10px; width: 130px; opacity: 0.6; transform-origin: bottom center; animation: treeSway 6s ease-in-out infinite; }
-.tree-left { left: -20px; }
-.tree-right { right: -20px; transform: scaleX(-1); animation-delay: 1.5s; }
+/* =========================================
+   1. OVERLAYS (LOADER, LOGIN, VIDEO, MODAL)
+   ========================================= */
+#loader, #loginOverlay, .video-overlay, .modal-overlay {
+    position: fixed; inset: 0; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center; 
+    text-align: center;
+}
+
+#loader { z-index: 10000; background: #000; }
+#loginOverlay { z-index: 9000; background: rgba(0,0,0,0.95); transition: 0.8s; }
+.video-overlay { z-index: 11000; background: rgba(0,0,0,0.95); display: none; }
+.modal-overlay { z-index: 12000; background: rgba(0,0,0,0.85); display: none; }
+
+/* Loader Animation */
+.loader-logo { font-family: 'Dancing Script', cursive; font-size: 4.5rem; text-shadow: 0 0 20px var(--primary); animation: pulse 2s infinite; }
+.loader-sub { letter-spacing: 3px; margin-top: 10px; font-size: 0.9rem; opacity: 0.8; font-weight: 300; }
+@keyframes pulse { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+
+/* Login Box */
+#loginOverlay h2 { letter-spacing: 4px; font-weight: 300; margin-bottom: 30px; font-size: 1.5rem; }
+#loginOverlay input { padding: 15px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: white; width: 280px; margin-bottom: 20px; text-align: center; font-size: 16px; outline: none; transition: 0.3s; }
+#loginOverlay input:focus { border-color: var(--primary); background: rgba(255,255,255,0.2); }
+.btn-login { padding: 12px 40px; border-radius: 30px; background: var(--primary); color: white; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(255,77,109,0.4); }
+.btn-login:active { transform: scale(0.95); }
+#errorMsg { color: var(--primary); margin-top: 15px; display: none; font-weight: bold; }
+
+/* Video Box */
+.video-box { width: 90%; max-width: 400px; }
+#surpriseVideo { width: 100%; border-radius: 15px; border: 2px solid var(--primary); box-shadow: 0 0 30px rgba(255,77,109,0.6); }
+.btn-close-video { margin-top: 25px; padding: 12px 30px; border: 1px solid white; background: transparent; color: white; border-radius: 30px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+.btn-close-video:hover { background: white; color: black; }
+
+/* Modal Box */
+.modal-content { background: white; color: #333; padding: 35px 20px; border-radius: 15px; width: 90%; max-width: 380px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.close-x { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #888; transition: 0.2s; font-weight: bold; }
+.close-x:hover { color: var(--primary); }
+.modal-content h2 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.2rem; margin-bottom: 10px; }
+.modal-content hr { margin: 15px 0; border: none; border-top: 1px solid #eee; }
+
+/* =========================================
+   2. BACKGROUND POHON
+   ========================================= */
+.forest-background { position: fixed; bottom: 0; left: 0; width: 100%; height: 250px; z-index: 1; pointer-events: none; overflow: hidden; }
+.tree { position: absolute; bottom: -20px; width: 160px; opacity: 0.5; transform-origin: bottom center; animation: treeSway 6s ease-in-out infinite; }
+.tree-left { left: -30px; }
+.tree-right { right: -30px; transform: scaleX(-1); animation-delay: 1.5s; }
 @keyframes treeSway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
 
-/* VIDEO */
-.video-overlay { position: fixed; inset: 0; background: #000; z-index: 11000; display: none; justify-content: center; align-items: center; }
-.video-box { width: 90%; max-width: 500px; text-align: center; }
-#surpriseVideo { width: 100%; border-radius: 15px; box-shadow: 0 0 20px var(--primary); }
+/* =========================================
+   3. MAIN CONTENT & HEADER
+   ========================================= */
+#mainContent { position: relative; z-index: 5; transition: opacity 1s ease-in-out; width: 100%; max-width: 1000px; margin: 0 auto; padding-bottom: 60px; }
+header { text-align: center; padding: 60px 20px 30px 20px; }
+.title { font-family: 'Dancing Script', cursive; font-size: 3.8rem; color: var(--primary); text-shadow: 0 2px 10px rgba(255,77,109,0.3); margin-bottom: 10px; }
+#loveCounter { margin: 15px 0 30px 0; color: white; font-weight: 600; letter-spacing: 1px; font-size: 1rem; }
+#loveCounter span { background: rgba(255,77,109,0.8); padding: 5px 10px; border-radius: 8px; margin: 0 3px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
-/* CONTENT & POLAROID */
-#mainContent { position: relative; z-index: 5; transition: 1s; }
-header { text-align: center; padding: 50px 20px; }
-.title { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--primary); }
-.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; padding: 20px; }
-.photo-card { background: white; padding: 10px 10px 35px 10px; transform: rotate(calc(var(--r, 0) * 1deg)); transition: 0.3s; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-.photo-card img { width: 100%; height: 160px; object-fit: cover; }
-.photo-card:hover { transform: scale(1.08) rotate(0deg) !important; z-index: 50; }
+/* Buttons Header (Animasi Merah) */
+.button-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+.btn-estetik { padding: 12px 25px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.3); background: var(--glass); color: white; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(5px); }
+.btn-estetik:hover { border-color: var(--primary); box-shadow: 0 0 15px rgba(255,77,109,0.4); }
+.btn-estetik:active { transform: scale(0.9); background: var(--primary); box-shadow: 0 0 20px var(--primary); }
 
-/* ANIMASI MERAH SAAT KLIK */
-.btn-estetik { padding: 10px 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: white; cursor: pointer; transition: 0.2s; }
-.btn-estetik:active { transform: scale(0.9); box-shadow: 0 0 15px var(--primary); background: var(--primary); }
+/* =========================================
+   4. UPLOAD & TIME CAPSULE
+   ========================================= */
+.capsule-section { display: flex; justify-content: center; padding: 20px; margin-bottom: 10px; }
+.envelope { background: var(--glass); padding: 20px 50px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s; text-align: center; backdrop-filter: blur(5px); }
+.envelope:hover { transform: translateY(-5px); background: rgba(255,77,109,0.15); border-color: var(--primary); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+.envelope p { font-family: 'Dancing Script', cursive; font-size: 1.8rem; margin-top: 10px; }
 
-/* DELETE BTN */
-.delete-btn { position: absolute; top: 5px; right: 5px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; opacity: 0; transition: 0.2s; }
+.upload-area { text-align: center; margin: 20px 0 40px 0; }
+#photoCaption { padding: 12px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: var(--glass); color: white; width: 260px; margin-bottom: 15px; outline: none; }
+#photoCaption::placeholder { color: #bbb; }
+.btn-upload { background: white; color: var(--primary); padding: 10px 30px; border-radius: 30px; font-weight: bold; cursor: pointer; display: inline-block; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.btn-upload:hover { box-shadow: 0 0 20px rgba(255,255,255,0.5); transform: translateY(-2px); }
+#file-upload { display: none; }
+
+/* =========================================
+   5. GALLERY POLAROID GRID
+   ========================================= */
+.gallery-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 30px; padding: 20px 40px; }
+.photo-card { 
+    background: white; padding: 12px 12px 50px 12px; border-radius: 4px; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4); position: relative; 
+    transform: rotate(calc(var(--r, 0) * 1deg)); 
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+.photo-card:hover { transform: scale(1.12) rotate(0deg) !important; z-index: 50; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+.photo-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 2px; border: 1px solid #eee; }
+.photo-caption { font-family: 'Dancing Script', cursive; color: #222; text-align: center; margin-top: 10px; font-weight: bold; font-size: 1.3rem; position: absolute; bottom: 12px; width: calc(100% - 24px); }
+
+/* Tombol X (Hapus) */
+.delete-btn { 
+    position: absolute; top: -12px; right: -12px; background: var(--primary); color: white; 
+    border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 18px; line-height: 32px; 
+    cursor: pointer; opacity: 0; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.4); 
+}
 .photo-card:hover .delete-btn { opacity: 1; }
+.delete-btn:hover { background: #e03e5c; transform: scale(1.1); }
 
-/* LAINNYA */
-.loader-logo { font-family: 'Dancing Script', cursive; font-size: 4rem; text-shadow: 0 0 15px var(--primary); }
-#loginOverlay input { padding: 12px; border-radius: 8px; border: none; width: 260px; margin-bottom: 15px; text-align: center; }
-.btn-login { padding: 10px 30px; border-radius: 20px; background: var(--primary); color: white; border: none; cursor: pointer; }
-.envelope { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; text-align: center; }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 12000; }
-.modal-content { background: white; color: #333; padding: 25px; border-radius: 12px; width: 85%; max-width: 350px; text-align: center; position: relative; }
+/* =========================================
+   6. RESPONSIVE MOBILE
+   ========================================= */
+@media (max-width: 600px) {
+    .gallery-container { grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
+    .photo-card img { height: 150px; }
+    .photo-card { padding: 10px 10px 40px 10px; }
+    header { padding-top: 40px; }
+    .title { font-size: 3rem; }
+    .btn-estetik { padding: 10px 20px; font-size: 0.9rem; }
+}
